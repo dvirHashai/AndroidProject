@@ -1,6 +1,7 @@
 package com.cambio.finalprojectandroid;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener {
@@ -9,6 +10,11 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        EventListFragment eventListFragment = new EventListFragment();
+        FragmentTransaction tran = getFragmentManager().beginTransaction();
+        tran.add(R.id.main_fragment_container, eventListFragment, "eventListFragment");
+        tran.commit();
     }
 
     @Override
