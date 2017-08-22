@@ -23,12 +23,11 @@ interface MyOnTimeSetListener {
 }
 
 public class MyTimePicker extends EditText implements MyOnTimeSetListener {
-    Time time;
+    Time time ;
 
 
     public MyTimePicker(Context context) {
         super(context);
-        time = new Time(1, 2);
         setInputType(0);
     }
 
@@ -58,6 +57,7 @@ public class MyTimePicker extends EditText implements MyOnTimeSetListener {
     @Override
     public void onTimeSet(Time time) {
         setText(time.toString());
+        this.time = new Time(1, 2);
         this.time.setHour(time.getHour());
         this.time.setMinute(time.getMinute());
 

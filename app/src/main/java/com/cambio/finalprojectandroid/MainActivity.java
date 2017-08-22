@@ -67,9 +67,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     public void onEventClickInteraction(String eventID) {
         EventDetailsFragment eventDetailsFragment = EventDetailsFragment.newInstance(eventID);
         FragmentTransaction tran = getFragmentManager().beginTransaction();
-        tran.add(R.id.main_fragment_container, eventDetailsFragment, "eventDetailsFragment");
-        tran.hide(eventListFragment);
-        tran.show(eventDetailsFragment);
+        tran.replace(R.id.main_fragment_container, eventDetailsFragment);
         tran.commit();
 
     }
@@ -91,7 +89,11 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
     @Override
     public void onAddEventInteraction() {
-
+        FragmentTransaction tran = getFragmentManager().beginTransaction();
+        tran.replace(R.id.main_fragment_container, eventListFragment);
+        tran.addToBackStack("");
+        tran.commit();
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

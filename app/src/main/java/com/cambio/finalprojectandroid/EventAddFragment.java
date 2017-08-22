@@ -52,11 +52,20 @@ public class EventAddFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = new Date(datePicker.getDate().getYear(),datePicker.getDate().getMonth(),datePicker.getDate().getDayOfMonth());
-                Time time = new Time(timePicker.getTime());
+                if(datePicker.getDate() != null) {
+                    if (datePicker.getDate() != null) {
 
-                Event event = new Event(null,name.getText().toString(),date,time,price.getText().toString(),location.getText().toString(),"","");
-                Model.instace.addEvent(event);
+
+                        final Date date = new Date(datePicker.getDate());
+
+
+                        Time time = new Time(timePicker.getTime());
+
+
+                        Event event = new Event(null, name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", "");
+                        Model.instace.addEvent(event);
+                    }
+                }
                 mListener.onAddEventInteraction();
             }
         });
@@ -69,7 +78,7 @@ public class EventAddFragment extends Fragment {
             }
         });
 
-//TODO getActivity().invalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
         return contextView;
     }
 

@@ -31,7 +31,7 @@ public class MyDatePicker extends EditText implements MyOnDateSetListener {
 
     public MyDatePicker(Context context) {
         super(context);
-        this.date = new Date(1991,11,2);
+
         setInputType(0);
     }
 
@@ -69,6 +69,7 @@ public class MyDatePicker extends EditText implements MyOnDateSetListener {
     @Override
     public void onDateSet(Date date) {
         setText(date.toString());
+        this.date = new Date(1991,11,2);
         this.date.setYear(date.getYear());
         this.date.setMonth(date.getMonth() +1);
         this.date.setDayOfMonth(date.getDayOfMonth());
