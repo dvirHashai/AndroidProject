@@ -15,7 +15,7 @@ public class Model {
     public final static Model instace = new Model();
     private String studentId;
     final static Date date = new Date(1991,11,1);
-    final static Time time = new Time(1,1,1);
+    final static Time time = new Time(1,1);
 
 
     private Model(){
@@ -26,7 +26,7 @@ public class Model {
             event.setId("" + i);
             event.setImageUrl("");
             event.setDate( new Date(1991,11,1));
-            event.setTime(new Time(1,1,1));
+            event.setTime(new Time(1,1));
             event.setLocation("");
 
             data.add(event);

@@ -47,7 +47,7 @@ public class EventListFragment extends Fragment {
                              Bundle savedInstanceState) {
         getActivity().setTitle("Event List");
         // Inflate the layout for this fragment
-        View contextView =  inflater.inflate(R.layout.fragment_event_list, container, false);
+        View contextView = inflater.inflate(R.layout.fragment_event_list, container, false);
 
         data = Model.instace.getAllEvents();
         list = (ListView) contextView.findViewById(R.id.event_list);

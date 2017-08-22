@@ -6,6 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.cambio.finalprojectandroid.model.Event;
+import com.cambio.finalprojectandroid.model.Model;
+import com.cambio.finalprojectandroid.widget.MyDatePicker;
+import com.cambio.finalprojectandroid.widget.MyTimePicker;
 
 
 /**
@@ -17,14 +27,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class EventEditFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String EVENT_ID = "eventId";
+
+    private String eventId;
 
     private OnFragmentInteractionListener mListener;
 
@@ -32,20 +38,10 @@ public class EventEditFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EventEditFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EventEditFragment newInstance(String param1, String param2) {
+    public static EventEditFragment newInstance(String eventId) {
         EventEditFragment fragment = new EventEditFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(EVENT_ID, eventId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,8 +50,8 @@ public class EventEditFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            eventId = getArguments().getString(EVENT_ID);
+
         }
     }
 
@@ -64,7 +60,68 @@ public class EventEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         getActivity().setTitle("Edit Event");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_edit, container, false);
+        View contentView = inflater.inflate(R.layout.fragment_event_edit, container, false);
+        final ImageView eventImage = (ImageView) contentView.findViewById(R.id.event_edit_image);
+        final EditText eventName = (EditText) contentView.findViewById(R.id.event_edit_name);
+        final MyDatePicker eventDate = (MyDatePicker) contentView.findViewById(R.id.event_edit_date);
+        final MyTimePicker eventTime = (MyTimePicker) contentView.findViewById(R.id.event_edit_time);
+        final EditText eventLocation = (EditText) contentView.findViewById(R.id.event_edit_location);
+        final EditText eventPrice = (EditText) contentView.findViewById(R.id.event_edit_price);
+        final Event event = Model.instace.getEvent(eventId);
+
+        eventName.setText(event.getName());
+        eventDate.setText(event.getDate().toString());
+        eventTime.setText(event.getTime().toString());
+        eventLocation.setText(event.getLocation());
+        eventPrice.setText(event.getPrice());
+        Button saveBtn = (Button) contentView.findViewById(R.id.event_add_save_btn);
+      /*  saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final int year = datePicker.year;
+                final int month = datePicker.month;
+                final int dayOfMonth = datePicker.dayOfMonth;
+                final int hour = timePicker.hour;
+                final int min = timePicker.min;
+                final Student stEdit = new Student(idET.getText().toString(), nameET.getText().toString(), checkBox.isChecked(), "", phoneEt.getText().toString(), addressEt.getText().toString(), hour, min, year, month, dayOfMonth);
+                Student student = Model.instace.getStudent(stView.getId());
+                student.setName(stEdit.getName());
+                student.setId(stEdit.getId());
+                student.setChecked(stEdit.getChecked());
+                student.setImageUrl(stEdit.getImageUrl());
+                student.setAddress(stEdit.getAddress());
+                student.setPhone(stEdit.getPhone());
+                student.setBirthHour(stEdit.getBirthHour());
+                student.setBirthMin(stEdit.getBirthMin());
+                student.setYear(stEdit.getYear());
+                student.setMonth(stEdit.getMonth());
+                student.setDayOfMonth(stEdit.getDayOfMonth());
+                mListener.onSaveInteraction();
+            }
+        });
+
+        Button cancelBtn = (Button) contentView.findViewById(R.id.edit_cancel_btn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCancelInteraction();
+
+            }
+        });
+
+        Button deleteBtn = (Button) contentView.findViewById(R.id.edit_delete_btn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Model.instace.removeStudent(stView);
+                mListener.onDeleteInteraction();
+
+            }
+        });*/
+
+        getActivity().invalidateOptionsMenu();
+        return contentView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -91,16 +148,6 @@ public class EventEditFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onSaveEventInteraction();

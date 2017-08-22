@@ -7,6 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.cambio.finalprojectandroid.model.Event;
+import com.cambio.finalprojectandroid.model.Model;
 
 
 /**
@@ -34,7 +40,7 @@ public class EventDetailsFragment extends Fragment {
     }
 
 
-    public static EventDetailsFragment newInstance(String eventId ) {
+    public static EventDetailsFragment newInstance(String eventId) {
         EventDetailsFragment fragment = new EventDetailsFragment();
         Bundle args = new Bundle();
         args.putString(EVENT_ID, eventId);
@@ -56,8 +62,25 @@ public class EventDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().setTitle("Event Details");
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_details, container, false);
+        View contentView = inflater.inflate(R.layout.fragment_event_details, container, false);
+        final ImageView eventImage = (ImageView) contentView.findViewById(R.id.event_details_image);
+        final  TextView eventName = (TextView) contentView.findViewById(R.id.event_details_name);
+        final TextView eventDate = (TextView) contentView.findViewById(R.id.event_details_date);
+        final TextView eventTime = (TextView) contentView.findViewById(R.id.event_details_time);
+        final TextView eventLocation = (TextView) contentView.findViewById(R.id.event_details_location);
+        final TextView eventPrice = (TextView) contentView.findViewById(R.id.event_details_price);
+
+
+        final Event event = Model.instace.getEvent(eventId);
+        //TODO set image in top details
+        eventName.setText(event.getName());
+        eventDate.setText(event.getDate().toString());
+        eventTime.setText(event.getTime().toString());
+        eventLocation.setText(event.getLocation());
+        eventPrice.setText(event.getPrice());
+        //TODO interface method to transfer the id of the student to the edit fragment by option menu in the main activity
+        //TODO  getActivity().invalidateOptionsMenu()
+        return contentView;
     }
 
     @Override

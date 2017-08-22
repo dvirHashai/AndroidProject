@@ -12,20 +12,23 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.cambio.finalprojectandroid.utils.Time;
+
 /**
  * Created by Chen on 18/05/2017.
  */
 
-interface MyOnTimeSetListener{
-    void onTimeSet(int hour, int min);
+interface MyOnTimeSetListener {
+    void onTimeSet(Time time);
 }
 
 public class MyTimePicker extends EditText implements MyOnTimeSetListener {
-    int hour = 12;
-    int min = 0;
+    Time time;
+
 
     public MyTimePicker(Context context) {
         super(context);
+        time = new Time(1, 2);
         setInputType(0);
     }
 
@@ -42,24 +45,32 @@ public class MyTimePicker extends EditText implements MyOnTimeSetListener {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-        if (event.getAction() == MotionEvent.ACTION_DOWN){
-            Log.d("TAG","event.getAction() == MotionEvent.ACTION_DOWN");
-            MyTimePickerDialog tpd =  MyTimePickerDialog.newInstance(getId());
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            Log.d("TAG", "event.getAction() == MotionEvent.ACTION_DOWN");
+            MyTimePickerDialog tpd = MyTimePickerDialog.newInstance(getId());
             tpd.listener = this;
-            tpd.show(((Activity)getContext()).getFragmentManager(),"TAG");
+            tpd.show(((Activity) getContext()).getFragmentManager(), "TAG");
             return true;
         }
         return true;
     }
 
     @Override
-    public void onTimeSet(int hour, int min) {
-        setText("" + hour + ":" + min);
-        this.hour = hour;
-        this.min = min;
+    public void onTimeSet(Time time) {
+        setText(time.toString());
+        this.time.setHour(time.getHour());
+        this.time.setMinute(time.getMinute());
+
 
     }
 
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
 
     public static class MyTimePickerDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
         private static final String ARG_CONTAINER_EDIT_TEXT_VIEW = "edit_text_container";
@@ -76,7 +87,7 @@ public class MyTimePicker extends EditText implements MyOnTimeSetListener {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             super.onCreateDialog(savedInstanceState);
-            Dialog timePicker = new TimePickerDialog(getActivity(),this,22,44,false);
+            Dialog timePicker = new TimePickerDialog(getActivity(), this, 22, 44, false);
 
             if (getArguments() != null) {
                 int tag = getArguments().getInt(ARG_CONTAINER_EDIT_TEXT_VIEW);
@@ -88,8 +99,8 @@ public class MyTimePicker extends EditText implements MyOnTimeSetListener {
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            Log.d("TAG","onTimeSet " + hourOfDay +":" + minute);
-            listener.onTimeSet(hourOfDay,minute);
+            Log.d("TAG", "onTimeSet " + hourOfDay + ":" + minute);
+            listener.onTimeSet(new Time(hourOfDay, minute));
         }
 
 

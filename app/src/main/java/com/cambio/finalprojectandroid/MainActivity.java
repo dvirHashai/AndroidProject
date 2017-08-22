@@ -6,12 +6,13 @@ import android.os.Bundle;
 
 public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener {
     EventListFragment eventListFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-         eventListFragment = EventListFragment.newInstance();
+        eventListFragment = EventListFragment.newInstance();
         FragmentTransaction tran = getFragmentManager().beginTransaction();
         tran.add(R.id.main_fragment_container, eventListFragment, "eventListFragment");
         tran.commit();
