@@ -32,6 +32,10 @@ public class Event implements Serializable {
         this.lastUpDateTime = lastUpDateTime;
     }
 
+    public Event() {
+        
+    }
+
     public String getId() {
         return id;
     }
