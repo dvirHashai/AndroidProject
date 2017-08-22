@@ -79,7 +79,7 @@ public class EventDetailsFragment extends Fragment {
         eventLocation.setText(event.getLocation());
         eventPrice.setText(event.getPrice());
         //TODO interface method to transfer the id of the student to the edit fragment by option menu in the main activity
-        //TODO  getActivity().invalidateOptionsMenu()
+        getActivity().invalidateOptionsMenu();
         return contentView;
     }
 

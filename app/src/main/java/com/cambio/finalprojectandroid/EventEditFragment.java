@@ -3,6 +3,7 @@ package com.cambio.finalprojectandroid;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,16 +75,19 @@ public class EventEditFragment extends Fragment {
 
                 Date date = new Date(eventDate.getDate());
                 Time time = new Time(eventTime.getTime());
-
-                Event newEvent = new Event(event);
-                Event oldEvent = Model.instace.getEvent(newEvent.getId());
-                oldEvent.setName(newEvent.getName());
-                oldEvent.setDate(newEvent.getDate());
-                oldEvent.setTime(newEvent.getTime());
-                oldEvent.setImageUrl(newEvent.getImageUrl());
-                oldEvent.setLocation(newEvent.getLocation());
-                oldEvent.setPrice(newEvent.getPrice());
-                mListener.onSaveEventInteraction();
+                if (date != null && time != null) {
+                    Event newEvent = new Event(event);
+                    Event oldEvent = Model.instace.getEvent(newEvent.getId());
+                    oldEvent.setName(newEvent.getName());
+                    oldEvent.setDate(newEvent.getDate());
+                    oldEvent.setTime(newEvent.getTime());
+                    oldEvent.setImageUrl(newEvent.getImageUrl());
+                    oldEvent.setLocation(newEvent.getLocation());
+                    oldEvent.setPrice(newEvent.getPrice());
+                    mListener.onSaveEventInteraction();
+                } else {
+                    Log.d("TAG", "Time or Date is null");
+                }
             }
         });
 
