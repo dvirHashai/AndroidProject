@@ -9,10 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.cambio.finalprojectandroid.model.Event;
-import com.cambio.finalprojectandroid.model.Model;
 import com.cambio.finalprojectandroid.utils.Date;
-import com.cambio.finalprojectandroid.utils.Time;
 import com.cambio.finalprojectandroid.widget.MyDatePicker;
 import com.cambio.finalprojectandroid.widget.MyTimePicker;
 
@@ -52,7 +49,7 @@ public class EventAddFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = new Date(datePicker.getDate().getYear(),datePicker.getDate().getMonth(),datePicker.getDate().getDayOfManth());
+                Date date = new Date(datePicker.getDate().getYear(),datePicker.getDate().getMonth(),datePicker.getDate().getDayOfMonth());
                 //Time time = new Time(timePicker)
 
                // Event event = new Event(null,name.getText().toString(),date,time,price.getText().toString(),location.getText().toString(),"","");

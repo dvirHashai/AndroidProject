@@ -71,7 +71,7 @@ public class MyDatePicker extends EditText implements MyOnDateSetListener {
         setText(date.toString());
         this.date.setYear(date.getYear());
         this.date.setMonth(date.getMonth() +1);
-        this.date.setDayOfManth(date.getDayOfManth());
+        this.date.setDayOfMonth(date.getDayOfMonth());
     }
 
 

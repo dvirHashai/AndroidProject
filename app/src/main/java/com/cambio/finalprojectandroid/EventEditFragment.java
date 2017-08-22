@@ -7,25 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.cambio.finalprojectandroid.model.Event;
 import com.cambio.finalprojectandroid.model.Model;
+import com.cambio.finalprojectandroid.utils.Date;
+import com.cambio.finalprojectandroid.utils.Time;
 import com.cambio.finalprojectandroid.widget.MyDatePicker;
 import com.cambio.finalprojectandroid.widget.MyTimePicker;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link EventEditFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link EventEditFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EventEditFragment extends Fragment {
 
     private static final String EVENT_ID = "eventId";
@@ -75,61 +67,39 @@ public class EventEditFragment extends Fragment {
         eventLocation.setText(event.getLocation());
         eventPrice.setText(event.getPrice());
         Button saveBtn = (Button) contentView.findViewById(R.id.event_add_save_btn);
-      /*  saveBtn.setOnClickListener(new View.OnClickListener() {
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final int year = datePicker.year;
-                final int month = datePicker.month;
-                final int dayOfMonth = datePicker.dayOfMonth;
-                final int hour = timePicker.hour;
-                final int min = timePicker.min;
-                final Student stEdit = new Student(idET.getText().toString(), nameET.getText().toString(), checkBox.isChecked(), "", phoneEt.getText().toString(), addressEt.getText().toString(), hour, min, year, month, dayOfMonth);
-                Student student = Model.instace.getStudent(stView.getId());
-                student.setName(stEdit.getName());
-                student.setId(stEdit.getId());
-                student.setChecked(stEdit.getChecked());
-                student.setImageUrl(stEdit.getImageUrl());
-                student.setAddress(stEdit.getAddress());
-                student.setPhone(stEdit.getPhone());
-                student.setBirthHour(stEdit.getBirthHour());
-                student.setBirthMin(stEdit.getBirthMin());
-                student.setYear(stEdit.getYear());
-                student.setMonth(stEdit.getMonth());
-                student.setDayOfMonth(stEdit.getDayOfMonth());
-                mListener.onSaveInteraction();
+
+                Date date = new Date(eventDate.getDate());
+                Time time = new Time(eventTime.getTime());
+
+                Event newEvent = new Event(event);
+                Event oldEvent = Model.instace.getEvent(newEvent.getId());
+                oldEvent.setName(newEvent.getName());
+                oldEvent.setDate(newEvent.getDate());
+                oldEvent.setTime(newEvent.getTime());
+                oldEvent.setImageUrl(newEvent.getImageUrl());
+                oldEvent.setLocation(newEvent.getLocation());
+                oldEvent.setPrice(newEvent.getPrice());
+                mListener.onSaveEventInteraction();
             }
         });
 
-        Button cancelBtn = (Button) contentView.findViewById(R.id.edit_cancel_btn);
+        Button cancelBtn = (Button) contentView.findViewById(R.id.event_edit_cancel_btn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onCancelInteraction();
+                mListener.onCancelEventInteraction();
 
             }
         });
-
-        Button deleteBtn = (Button) contentView.findViewById(R.id.edit_delete_btn);
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Model.instace.removeStudent(stView);
-                mListener.onDeleteInteraction();
-
-            }
-        });*/
 
         getActivity().invalidateOptionsMenu();
         return contentView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed() {
-        if (mListener != null) {
-            mListener.onSaveEventInteraction();
-        }
-    }
 
     @Override
     public void onAttach(Context context) {

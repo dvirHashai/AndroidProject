@@ -32,6 +32,17 @@ public class Event implements Serializable {
         this.lastUpDateTime = lastUpDateTime;
     }
 
+    public Event(Event event){
+        this.id = event.getId();
+        this.name = event.getName();
+        this.date = event.getDate();
+        this.time = event.getTime();
+        this.price = event.getPrice();
+        this.location = event.getLocation();
+        this.imageUrl = event.getImageUrl();
+        this.lastUpDateTime = event.getLastUpDateTime();
+    }
+
     public Event() {
         
     }

@@ -15,6 +15,11 @@ public class Time {
         this.minute = minute;
     }
 
+    public Time(Time time){
+        this.hour = time.getHour();
+        this.minute = time.getMinute();
+    }
+
     public int getHour() {
         return hour;
     }

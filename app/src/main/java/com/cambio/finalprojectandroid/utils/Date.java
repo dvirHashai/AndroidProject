@@ -16,6 +16,12 @@ public class Date {
         this.dayOfMonth = dayOfMonth;
     }
 
+    public Date(Date date){
+        this.year = date.getYear();
+        this.month = date.getMonth();
+        this.dayOfMonth = date.getDayOfMonth();
+    }
+
     public int getYear() {
         return year;
     }
@@ -32,12 +38,12 @@ public class Date {
         this.month = month;
     }
 
-    public int getDayOfManth() {
+    public int getDayOfMonth() {
         return dayOfMonth;
     }
 
-    public void setDayOfManth(int dayOfManth) {
-        this.dayOfMonth = dayOfManth;
+    public void setDayOfMonth(int dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
     }
 
     @Override
