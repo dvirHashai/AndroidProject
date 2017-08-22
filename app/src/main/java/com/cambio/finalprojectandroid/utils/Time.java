@@ -52,9 +52,7 @@ public class Time {
 
     @Override
     public String toString() {
-        return "Time{" +
-                "hour=" + hour +
-                ", minute=" + minute +
-                '}';
+        return "" + hour +
+                ":" + minute;
     }
 }
