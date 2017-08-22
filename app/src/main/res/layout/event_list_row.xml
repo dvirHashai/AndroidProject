@@ -18,20 +18,20 @@
 
         <TextView
             android:id="@+id/event_list_row_name"
-            android:layout_width="wrap_content"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="50dp"
+            android:gravity="center_horizontal"
+
             android:text="my name"
-            android:textSize="30dp"/>
+            android:textSize="30dp"
+            android:layout_weight="1"/>
 
-        <com.cambio.finalprojectandroid.widget.MyDatePicker
+        <TextView
             android:id="@+id/event_list_row_date"
-            android:layout_width="100dp"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="50dp"
-
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
             android:textSize="30dp"/>
 
 

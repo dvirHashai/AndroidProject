@@ -1,5 +1,9 @@
 package com.cambio.finalprojectandroid.model;
 
+
+import com.cambio.finalprojectandroid.utils.Date;
+import com.cambio.finalprojectandroid.utils.Time;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,19 +14,22 @@ import java.util.List;
 public class Model {
     public final static Model instace = new Model();
     private String studentId;
-
+    final static Date date = new Date(1991,11,1);
+    final static Time time = new Time(1,1,1);
 
 
     private Model(){
         for(int i=0;i<20;i++){
 
-            Event ev = new Event();
-            ev.setName("Student " + i);
-            ev.setId("" + i);
-            ev.setImageUrl("");
-            ev.setYear(1991);
-            ev.setMonth(11);
-            data.add(ev);
+            Event event = new Event();
+            event.setName("Student " + i);
+            event.setId("" + i);
+            event.setImageUrl("");
+            event.setDate( new Date(1991,11,1));
+            event.setTime(new Time(1,1,1));
+            event.setLocation("");
+
+            data.add(event);
         }
     }
 
@@ -38,7 +45,7 @@ public class Model {
         return data;
     }
 
-    public void addEventt(Event st){
+    public void addEvent(Event st){
         data.add(st);
     }
 

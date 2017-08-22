@@ -5,13 +5,13 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener {
-
+    EventListFragment eventListFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EventListFragment eventListFragment = new EventListFragment();
+         eventListFragment = EventListFragment.newInstance();
         FragmentTransaction tran = getFragmentManager().beginTransaction();
         tran.add(R.id.main_fragment_container, eventListFragment, "eventListFragment");
         tran.commit();
@@ -19,6 +19,12 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
     @Override
     public void onEventClickInteraction(String eventID) {
+        EventDetailsFragment eventDetailsFragment = EventDetailsFragment.newInstance(eventID);
+        FragmentTransaction tran = getFragmentManager().beginTransaction();
+        tran.add(R.id.main_fragment_container, eventDetailsFragment, "eventDetailsFragment");
+        tran.hide(eventListFragment);
+        tran.show(eventDetailsFragment);
+        tran.commit();
 
     }
 
