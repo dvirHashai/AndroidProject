@@ -16,12 +16,12 @@ public class Event implements Serializable {
     private String name;
     private Date date;
     private Time time;
-    private int price;
+    private String price;
     private String location;
     private String imageUrl;
     private String lastUpDateTime;
 
-    public Event(String id, String name, Date date, Time time, int price, String location, String imageUrl, String lastUpDateTime) {
+    public Event(String id, String name, Date date, Time time, String price, String location, String imageUrl, String lastUpDateTime) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -30,10 +30,6 @@ public class Event implements Serializable {
         this.location = location;
         this.imageUrl = imageUrl;
         this.lastUpDateTime = lastUpDateTime;
-    }
-
-    public Event() {
-
     }
 
     public String getId() {
@@ -68,11 +64,11 @@ public class Event implements Serializable {
         this.time = time;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -107,11 +103,11 @@ public class Event implements Serializable {
 
         Event event = (Event) o;
 
-        if (price != event.price) return false;
         if (!id.equals(event.id)) return false;
         if (!name.equals(event.name)) return false;
         if (!date.equals(event.date)) return false;
         if (!time.equals(event.time)) return false;
+        if (!price.equals(event.price)) return false;
         if (!location.equals(event.location)) return false;
         if (!imageUrl.equals(event.imageUrl)) return false;
         return lastUpDateTime.equals(event.lastUpDateTime);
@@ -124,7 +120,7 @@ public class Event implements Serializable {
         result = 31 * result + name.hashCode();
         result = 31 * result + date.hashCode();
         result = 31 * result + time.hashCode();
-        result = 31 * result + price;
+        result = 31 * result + price.hashCode();
         result = 31 * result + location.hashCode();
         result = 31 * result + imageUrl.hashCode();
         result = 31 * result + lastUpDateTime.hashCode();
@@ -138,7 +134,7 @@ public class Event implements Serializable {
                 ", name='" + name + '\'' +
                 ", date=" + date +
                 ", time=" + time +
-                ", price=" + price +
+                ", price='" + price + '\'' +
                 ", location='" + location + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", lastUpDateTime='" + lastUpDateTime + '\'' +

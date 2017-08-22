@@ -6,25 +6,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.cambio.finalprojectandroid.model.Event;
+import com.cambio.finalprojectandroid.model.Model;
+import com.cambio.finalprojectandroid.utils.Date;
+import com.cambio.finalprojectandroid.utils.Time;
+import com.cambio.finalprojectandroid.widget.MyDatePicker;
+import com.cambio.finalprojectandroid.widget.MyTimePicker;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link EventAddFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link EventAddFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EventAddFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -32,31 +25,15 @@ public class EventAddFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EventAddFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EventAddFragment newInstance(String param1, String param2) {
+
+    public static EventAddFragment newInstance() {
         EventAddFragment fragment = new EventAddFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -64,15 +41,38 @@ public class EventAddFragment extends Fragment {
                              Bundle savedInstanceState) {
         getActivity().setTitle("Add New Event");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_add, container, false);
+        View contextView = inflater.inflate(R.layout.fragment_event_add, container, false);
+        final EditText name = (EditText) contextView.findViewById(R.id.event_add_name);
+        final EditText price = (EditText) contextView.findViewById(R.id.event_add_price);
+        final EditText location = (EditText) contextView.findViewById(R.id.event_add_location);
+        final MyDatePicker datePicker = (MyDatePicker) contextView.findViewById(R.id.event_add_date);
+        final MyTimePicker timePicker = (MyTimePicker) contextView.findViewById(R.id.event_add_time);
+
+        Button saveBtn = (Button) contextView.findViewById(R.id.event_add_save_btn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date date = new Date(datePicker.getDate().getYear(),datePicker.getDate().getMonth(),datePicker.getDate().getDayOfManth());
+                //Time time = new Time(timePicker)
+
+               // Event event = new Event(null,name.getText().toString(),date,time,price.getText().toString(),location.getText().toString(),"","");
+               // Model.instace.addEvent(event);
+                mListener.onAddEventInteraction();
+            }
+        });
+
+        Button cancelBtn = (Button) contextView.findViewById(R.id.event_add_cancel_btn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onAddEventInteraction();
+            }
+        });
+
+//TODO getActivity().invalidateOptionsMenu();
+        return contextView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed() {
-        if (mListener != null) {
-            mListener.onAddEventInteraction();
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -91,16 +91,6 @@ public class EventAddFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onAddEventInteraction();

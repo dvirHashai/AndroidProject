@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.cambio.finalprojectandroid.utils.Date;
+
 import java.util.Calendar;
 
 /**
@@ -19,17 +21,17 @@ import java.util.Calendar;
  */
 
 interface MyOnDateSetListener {
-    void onDateSet(int year, int month, int dayOfMonth);
+    void onDateSet(Date date);
 }
 
 
 public class MyDatePicker extends EditText implements MyOnDateSetListener {
-    int year = 1991;
-    int month = 11;
-    int dayOfMonth = 2;
+
+      Date date;
 
     public MyDatePicker(Context context) {
         super(context);
+        this.date = new Date(1991,11,2);
         setInputType(0);
     }
 
@@ -41,6 +43,14 @@ public class MyDatePicker extends EditText implements MyOnDateSetListener {
     public MyDatePicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setInputType(0);
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override
@@ -57,11 +67,11 @@ public class MyDatePicker extends EditText implements MyOnDateSetListener {
     }
 
     @Override
-    public void onDateSet(int year, int month, int dayOfMonth) {
-        setText(year + " " + month + " " + dayOfMonth);
-        this.year = year;
-        this.month = month +1;
-        this.dayOfMonth = dayOfMonth;
+    public void onDateSet(Date date) {
+        setText(date.toString());
+        this.date.setYear(date.getYear());
+        this.date.setMonth(date.getMonth() +1);
+        this.date.setDayOfManth(date.getDayOfManth());
     }
 
 
@@ -104,7 +114,8 @@ public class MyDatePicker extends EditText implements MyOnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             Log.d("TAG", "onDateSet " + year + " " + month + " " + dayOfMonth);
-            listener.onDateSet(year, month +1, dayOfMonth);
+            Date date = new Date(year,month,dayOfMonth);
+            listener.onDateSet( date);
         }
     }
 

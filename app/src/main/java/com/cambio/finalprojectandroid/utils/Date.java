@@ -8,12 +8,12 @@ public class Date {
 
     private int year;
     private int month;
-    private int dayOfManth;
+    private int dayOfMonth;
 
-    public Date(int year, int month, int dayOfManth) {
+    public Date(int year, int month, int dayOfMonth) {
         this.year = year;
         this.month = month;
-        this.dayOfManth = dayOfManth;
+        this.dayOfMonth = dayOfMonth;
     }
 
     public int getYear() {
@@ -33,11 +33,11 @@ public class Date {
     }
 
     public int getDayOfManth() {
-        return dayOfManth;
+        return dayOfMonth;
     }
 
     public void setDayOfManth(int dayOfManth) {
-        this.dayOfManth = dayOfManth;
+        this.dayOfMonth = dayOfManth;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Date {
 
         if (year != date.year) return false;
         if (month != date.month) return false;
-        return dayOfManth == date.dayOfManth;
+        return dayOfMonth == date.dayOfMonth;
 
     }
 
@@ -57,7 +57,7 @@ public class Date {
     public int hashCode() {
         int result = year;
         result = 31 * result + month;
-        result = 31 * result + dayOfManth;
+        result = 31 * result + dayOfMonth;
         return result;
     }
 
@@ -66,7 +66,7 @@ public class Date {
         return "" +
                  year +
                 "/" + month +
-                "/" + dayOfManth
+                "/" + dayOfMonth
                 ;
     }
 }
