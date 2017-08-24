@@ -66,6 +66,7 @@ public class EventAddFragment extends Fragment {
                         Model.instace.addEvent(event);
                     }
                 }
+                getActivity().invalidateOptionsMenu();
                 mListener.onAddEventInteraction();
             }
         });
@@ -74,6 +75,7 @@ public class EventAddFragment extends Fragment {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getActivity().invalidateOptionsMenu();
                 mListener.onAddEventInteraction();
             }
         });

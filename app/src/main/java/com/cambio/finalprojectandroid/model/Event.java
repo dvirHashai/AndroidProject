@@ -21,6 +21,8 @@ public class Event implements Serializable {
     private String imageUrl;
     private String lastUpDateTime;
 
+
+
     public Event(String id, String name, Date date, Time time, String price, String location, String imageUrl, String lastUpDateTime) {
         this.id = id;
         this.name = name;

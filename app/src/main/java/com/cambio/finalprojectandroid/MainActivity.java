@@ -1,6 +1,7 @@
 package com.cambio.finalprojectandroid;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
@@ -89,16 +90,21 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
     @Override
     public void onAddEventInteraction() {
-        FragmentTransaction tran = getFragmentManager().beginTransaction();
-        tran.replace(R.id.main_fragment_container, eventListFragment);
-        tran.addToBackStack("");
-        tran.commit();
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        cleanBackStack();
     }
 
 
     @Override
     public void onEditEventInteraction() {
 
+    }
+
+    void cleanBackStack(){
+        int backStackCount = getFragmentManager().getBackStackEntryCount();
+
+        for(int i=0; i < backStackCount; i++) {
+            int backStackID = getFragmentManager().getBackStackEntryAt(i).getId();
+            getFragmentManager().popBackStack(backStackID, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
     }
 }
