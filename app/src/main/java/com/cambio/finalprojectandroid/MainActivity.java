@@ -20,6 +20,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
         eventListFragment = EventListFragment.newInstance();
         FragmentTransaction tran = getFragmentManager().beginTransaction();
         tran.add(R.id.main_fragment_container, eventListFragment, "eventListFragment");
+
         tran.commit();
     }
 
@@ -27,9 +28,9 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        if (getFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof EventListFragment){
+        if (getFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof EventListFragment) {
             getMenuInflater().inflate(R.menu.add_list_item, menu);
-        } else if (getFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof EventDetailsFragment){
+        } else if (getFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof EventDetailsFragment) {
             getMenuInflater().inflate(R.menu.edit_details_item, menu);
         }
 
@@ -40,7 +41,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     public boolean onOptionsItemSelected(MenuItem item) {
         FragmentTransaction tran = null;
         int itemId = item.getItemId();
-        switch (itemId){
+        switch (itemId) {
             case R.id.main_add:
                 EventAddFragment eventAddFragment = EventAddFragment.newInstance();
                 tran = getFragmentManager().beginTransaction();
@@ -61,7 +62,6 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
         }
 
 
-        
     }
 
     @Override
@@ -69,7 +69,9 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
         EventDetailsFragment eventDetailsFragment = EventDetailsFragment.newInstance(eventID);
         FragmentTransaction tran = getFragmentManager().beginTransaction();
         tran.replace(R.id.main_fragment_container, eventDetailsFragment);
+        tran.addToBackStack("");
         tran.commit();
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -85,24 +87,20 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
     @Override
     public void onCancelEventInteraction() {
-
-    }
-
-    @Override
-    public void onAddEventInteraction() {
         cleanBackStack();
     }
 
-
     @Override
-    public void onEditEventInteraction() {
-
+    public void onAddEventInteraction()
+    {
+        //cleanBackStack();
     }
 
-    void cleanBackStack(){
+
+    void cleanBackStack() {
         int backStackCount = getFragmentManager().getBackStackEntryCount();
 
-        for(int i=0; i < backStackCount; i++) {
+        for (int i = 0; i < backStackCount; i++) {
             int backStackID = getFragmentManager().getBackStackEntryAt(i).getId();
             getFragmentManager().popBackStack(backStackID, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }

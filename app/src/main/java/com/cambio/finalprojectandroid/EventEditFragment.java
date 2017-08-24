@@ -51,6 +51,7 @@ public class EventEditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         getActivity().setTitle("Edit Event");
         // Inflate the layout for this fragment
         View contentView = inflater.inflate(R.layout.fragment_event_edit, container, false);
@@ -72,13 +73,13 @@ public class EventEditFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(event.getDate() != null) {
-                    if (event.getTime() != null) {
-                        Date date = new Date(event.getDate());
-                        Time time = new Time(event.getTime());
+                if(eventDate.getDate() != null) {
+                    if (eventTime.getTime() != null) {
+                        Date date = new Date(eventDate.getDate());
+                        Time time = new Time(eventTime.getTime());
 
                         if (date != null && time != null) {
-                            Event newEvent = new Event(event);
+                            Event newEvent = new Event(event.getId(),event.getName(),eventDate.getDate(),eventTime.getTime(),event.getPrice(),event.getLocation(),event.getImageUrl(),event.getLastUpDateTime());
                             Event oldEvent = Model.instace.getEvent(newEvent.getId());
                             oldEvent.setName(newEvent.getName());
                             oldEvent.setDate(newEvent.getDate());
@@ -86,6 +87,7 @@ public class EventEditFragment extends Fragment {
                             oldEvent.setImageUrl(newEvent.getImageUrl());
                             oldEvent.setLocation(newEvent.getLocation());
                             oldEvent.setPrice(newEvent.getPrice());
+                            getActivity().invalidateOptionsMenu();
                             mListener.onSaveEventInteraction();
                         } else {
                             Log.d("TAG", "Time or Date is null");
@@ -103,6 +105,7 @@ public class EventEditFragment extends Fragment {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getActivity().invalidateOptionsMenu();
                 mListener.onCancelEventInteraction();
 
             }

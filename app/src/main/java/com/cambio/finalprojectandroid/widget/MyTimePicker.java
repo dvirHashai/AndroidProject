@@ -23,21 +23,24 @@ interface MyOnTimeSetListener {
 }
 
 public class MyTimePicker extends EditText implements MyOnTimeSetListener {
-    Time time ;
+    Time time;
 
 
     public MyTimePicker(Context context) {
         super(context);
+        this.time = new Time(1, 2);
         setInputType(0);
     }
 
     public MyTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.time = new Time(1, 2);
         setInputType(0);
     }
 
     public MyTimePicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.time = new Time(1, 2);
         setInputType(0);
     }
 
@@ -60,7 +63,6 @@ public class MyTimePicker extends EditText implements MyOnTimeSetListener {
         this.time = new Time(1, 2);
         this.time.setHour(time.getHour());
         this.time.setMinute(time.getMinute());
-
 
     }
 

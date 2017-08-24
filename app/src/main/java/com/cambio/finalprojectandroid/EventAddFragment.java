@@ -39,6 +39,7 @@ public class EventAddFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         getActivity().setTitle("Add New Event");
         // Inflate the layout for this fragment
         View contextView = inflater.inflate(R.layout.fragment_event_add, container, false);

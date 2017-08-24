@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +45,13 @@ public class EventDetailsFragment extends Fragment {
         EventDetailsFragment fragment = new EventDetailsFragment();
         Bundle args = new Bundle();
         args.putString(EVENT_ID, eventId);
-
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -54,13 +59,13 @@ public class EventDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             eventId = getArguments().getString(EVENT_ID);
-
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         getActivity().setTitle("Event Details");
         View contentView = inflater.inflate(R.layout.fragment_event_details, container, false);
         final ImageView eventImage = (ImageView) contentView.findViewById(R.id.event_details_image);
@@ -99,10 +104,23 @@ public class EventDetailsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("TAG","On Destroy details fragment");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("TAG","On Destroy View details fragment");
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onEditEventInteraction();
+
     }
 }

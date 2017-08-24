@@ -27,21 +27,23 @@ interface MyOnDateSetListener {
 
 public class MyDatePicker extends EditText implements MyOnDateSetListener {
 
-      Date date;
+    Date date;
 
     public MyDatePicker(Context context) {
         super(context);
-
+        this.date = new Date(1991, 11, 2);
         setInputType(0);
     }
 
     public MyDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.date = new Date(1991, 11, 2);
         setInputType(0);
     }
 
     public MyDatePicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.date = new Date(1991, 11, 2);
         setInputType(0);
     }
 
@@ -69,9 +71,9 @@ public class MyDatePicker extends EditText implements MyOnDateSetListener {
     @Override
     public void onDateSet(Date date) {
         setText(date.toString());
-        this.date = new Date(1991,11,2);
+        this.date = new Date(1991, 11, 2);
         this.date.setYear(date.getYear());
-        this.date.setMonth(date.getMonth() +1);
+        this.date.setMonth(date.getMonth() + 1);
         this.date.setDayOfMonth(date.getDayOfMonth());
     }
 
@@ -115,8 +117,8 @@ public class MyDatePicker extends EditText implements MyOnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             Log.d("TAG", "onDateSet " + year + " " + month + " " + dayOfMonth);
-            Date date = new Date(year,month,dayOfMonth);
-            listener.onDateSet( date);
+            Date date = new Date(year, month, dayOfMonth);
+            listener.onDateSet(date);
         }
     }
 
