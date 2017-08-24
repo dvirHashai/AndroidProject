@@ -67,26 +67,34 @@ public class EventEditFragment extends Fragment {
         eventTime.setText(event.getTime().toString());
         eventLocation.setText(event.getLocation());
         eventPrice.setText(event.getPrice());
-        Button saveBtn = (Button) contentView.findViewById(R.id.event_add_save_btn);
+        Button saveBtn = (Button) contentView.findViewById(R.id.event_edit_save_btn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if(event.getDate() != null) {
+                    if (event.getTime() != null) {
+                        Date date = new Date(event.getDate());
+                        Time time = new Time(event.getTime());
 
-                Date date = new Date(eventDate.getDate());
-                Time time = new Time(eventTime.getTime());
-                if (date != null && time != null) {
-                    Event newEvent = new Event(event);
-                    Event oldEvent = Model.instace.getEvent(newEvent.getId());
-                    oldEvent.setName(newEvent.getName());
-                    oldEvent.setDate(newEvent.getDate());
-                    oldEvent.setTime(newEvent.getTime());
-                    oldEvent.setImageUrl(newEvent.getImageUrl());
-                    oldEvent.setLocation(newEvent.getLocation());
-                    oldEvent.setPrice(newEvent.getPrice());
-                    mListener.onSaveEventInteraction();
+                        if (date != null && time != null) {
+                            Event newEvent = new Event(event);
+                            Event oldEvent = Model.instace.getEvent(newEvent.getId());
+                            oldEvent.setName(newEvent.getName());
+                            oldEvent.setDate(newEvent.getDate());
+                            oldEvent.setTime(newEvent.getTime());
+                            oldEvent.setImageUrl(newEvent.getImageUrl());
+                            oldEvent.setLocation(newEvent.getLocation());
+                            oldEvent.setPrice(newEvent.getPrice());
+                            mListener.onSaveEventInteraction();
+                        } else {
+                            Log.d("TAG", "Time or Date is null");
+                        }
+                    } else {
+                        Log.d("TAG", "Time is null");
+                    }
                 } else {
-                    Log.d("TAG", "Time or Date is null");
+                    Log.d("TAG", "Date is null");
                 }
             }
         });

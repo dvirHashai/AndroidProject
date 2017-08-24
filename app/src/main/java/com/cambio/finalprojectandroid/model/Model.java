@@ -26,7 +26,7 @@ public class Model {
             event.setId("" + i);
             event.setPrice("100");
             event.setImageUrl("");
-            event.setDate( new Date(1991,11,1));
+            event.setDate( new Date(1,11,1991));
             event.setTime(new Time(1,1));
             event.setLocation("");
 

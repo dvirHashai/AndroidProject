@@ -75,7 +75,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
     @Override
     public void onSaveEventInteraction() {
-
+        cleanBackStack();
     }
 
     @Override

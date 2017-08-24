@@ -53,7 +53,7 @@ public class EventAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(datePicker.getDate() != null) {
-                    if (datePicker.getDate() != null) {
+                    if (timePicker.getTime() != null) {
 
 
                         final Date date = new Date(datePicker.getDate());
