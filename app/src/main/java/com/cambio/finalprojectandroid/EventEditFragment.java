@@ -61,7 +61,7 @@ public class EventEditFragment extends Fragment {
         final MyTimePicker eventTime = (MyTimePicker) contentView.findViewById(R.id.event_edit_time);
         final EditText eventLocation = (EditText) contentView.findViewById(R.id.event_edit_location);
         final EditText eventPrice = (EditText) contentView.findViewById(R.id.event_edit_price);
-        final Event event = Model.instace.getEvent(eventId);
+        final Event event = Model.instace.getModelMem().getEvent(eventId);
 
         eventName.setText(event.getName());
         eventDate.setText(event.getDate().toString());
@@ -80,7 +80,7 @@ public class EventEditFragment extends Fragment {
 
                         if (date != null && time != null) {
                             Event newEvent = new Event(event.getId(),event.getName(),eventDate.getDate(),eventTime.getTime(),event.getPrice(),event.getLocation(),event.getImageUrl(),event.getLastUpDateTime());
-                            Event oldEvent = Model.instace.getEvent(newEvent.getId());
+                            Event oldEvent = Model.instace.getModelMem().getEvent(newEvent.getId());
                             oldEvent.setName(newEvent.getName());
                             oldEvent.setDate(newEvent.getDate());
                             oldEvent.setTime(newEvent.getTime());

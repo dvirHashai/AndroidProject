@@ -3,7 +3,10 @@ package com.cambio.finalprojectandroid;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -51,7 +54,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
                 return true;
             case R.id.main_edit:
-                EventEditFragment eventEditFragment = EventEditFragment.newInstance(Model.instace.getEventId());
+                EventEditFragment eventEditFragment = EventEditFragment.newInstance(Model.instace.getModelMem().getEventId());
                 tran = getFragmentManager().beginTransaction();
                 tran.replace(R.id.main_fragment_container, eventEditFragment);
                 tran.addToBackStack("");
@@ -93,6 +96,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     @Override
     public void onAddEventInteraction()
     {
+
         cleanBackStack();
     }
 
@@ -105,4 +109,6 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
             getFragmentManager().popBackStack(backStackID, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
     }
+
+
 }

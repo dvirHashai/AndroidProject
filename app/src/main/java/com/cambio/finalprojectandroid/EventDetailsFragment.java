@@ -76,7 +76,7 @@ public class EventDetailsFragment extends Fragment {
         final TextView eventPrice = (TextView) contentView.findViewById(R.id.event_details_price);
 
 
-        final Event event = Model.instace.getEvent(eventId);
+        final Event event = Model.instace.getModelMem().getEvent(eventId);
         //TODO set image in top details
         eventName.setText(event.getName());
         eventDate.setText(event.getDate().toString());
@@ -84,7 +84,7 @@ public class EventDetailsFragment extends Fragment {
         eventLocation.setText(event.getLocation());
         eventPrice.setText(event.getPrice());
         //TODO interface method to transfer the id of the student to the edit fragment by option menu in the main activity
-        Model.instace.setEventId(eventId);
+        Model.instace.getModelMem().setEventId(eventId);
         getActivity().invalidateOptionsMenu();
         return contentView;
     }

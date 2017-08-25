@@ -48,7 +48,7 @@ public class EventListFragment extends Fragment {
         // Inflate the layout for this fragment
         View contextView = inflater.inflate(R.layout.fragment_event_list, container, false);
 
-        data = Model.instace.getAllEvents();
+        data = Model.instace.getModelMem().getAllEvents();
         list = (ListView) contextView.findViewById(R.id.event_list);
         adapter = new EventListAdapter();
         list.setAdapter(adapter);
