@@ -81,22 +81,18 @@ public class EventAddFragment extends Fragment {
                                     event.setImageUrl(url);
                                     Model.instace.addEvent(event);
                                     progressBar.setVisibility(GONE);
-                                    getActivity().invalidateOptionsMenu();
-                                    mListener.onAddEventInteraction();
                                 }
 
                                 @Override
                                 public void fail() {
                                     progressBar.setVisibility(GONE);
-                                    getActivity().invalidateOptionsMenu();
-                                    mListener.onAddEventInteraction();
+
                                 }
                             });
                         } else {
                             Model.instace.addEvent(event);
                             progressBar.setVisibility(GONE);
-                            getActivity().invalidateOptionsMenu();
-                            mListener.onAddEventInteraction();
+
                         }
                     }
                 }
