@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "269631953278",
+    "firebase_url": "https://final-project-android.firebaseio.com",
+    "project_id": "final-project-android",
+    "storage_bucket": "final-project-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269631953278:android:baa3febecd2326e4",
+        "android_client_info": {
+          "package_name": "com.cambio.finalprojectandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269631953278-1dotmdt1r2t38d9du14nl49bhb92l33m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwNGNAgJDsIGZ-UctCrXrlDFDdeUIPZ_s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
