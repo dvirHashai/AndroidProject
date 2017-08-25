@@ -13,49 +13,56 @@ import java.util.List;
 public class ModelMem {
 
     private String studentId;
+    final static Date date = new Date(1991, 11, 1);
+    final static Time time = new Time(1, 1);
 
 
-
-     ModelMem(){
-        for(int i=0;i<20;i++){
+     ModelMem() {
+        for (int i = 0; i < 20; i++) {
 
             Event event = new Event();
             event.setName("Student " + i);
             event.setId("" + i);
             event.setPrice("100");
             event.setImageUrl("");
-            event.setDate( new Date(1,11,1991));
-            event.setTime(new Time(1,1));
+            event.setDate(new Date(1, 11, 1991));
+            event.setTime(new Time(1, 1));
             event.setLocation("");
 
             data.add(event);
         }
     }
 
+    public ModelMem(List<Event> data) {
+        this.data = data;
+    }
+
+
     private List<Event> data = new LinkedList<Event>();
 
-    public List<Event> getAllEvents(){
+    public List<Event> getAllEvents() {
         return data;
     }
 
-    public void addEvent(Event st){
+    public void addEvent(Event st) {
         data.add(st);
     }
 
-    public void removeEvent(Event st){
+    public void removeEvent(Event st) {
         int index = data.indexOf(st);
         data.remove(index);
     }
 
 
     public Event getEvent(String stId) {
-        for (Event s : data){
-            if (s.getId().equals(stId)){
+        for (Event s : data) {
+            if (s.getId().equals(stId)) {
                 return s;
             }
         }
         return null;
     }
+
     public String getEventId() {
         return studentId;
     }
