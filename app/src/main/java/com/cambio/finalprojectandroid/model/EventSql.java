@@ -53,7 +53,7 @@ public class EventSql {
         return list;
     }
 
-    static void addStudent(SQLiteDatabase db, Event event) {
+    static void addEvent(SQLiteDatabase db, Event event) {
         ContentValues values = new ContentValues();
         values.put(EVENT_ID, event.getId());
         values.put(EVENT_NAME, event.getName());
@@ -66,7 +66,7 @@ public class EventSql {
         db.insert(EVENT_TABLE, EVENT_ID, values);
     }
 
-    static Event getStudent(SQLiteDatabase db, String id) {
+    static Event getEvent(SQLiteDatabase db, String id) {
         return null;
     }
 
