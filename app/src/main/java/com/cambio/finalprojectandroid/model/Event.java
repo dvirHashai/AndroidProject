@@ -19,11 +19,11 @@ public class Event implements Serializable {
     private String price;
     private String location;
     private String imageUrl;
-    private String lastUpDateTime;
+    private Double lastUpDateTime;
 
 
 
-    public Event(String id, String name, Date date, Time time, String price, String location, String imageUrl, String lastUpDateTime) {
+    public Event(String id, String name, Date date, Time time, String price, String location, String imageUrl, Double lastUpDateTime) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -105,11 +105,11 @@ public class Event implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public String getLastUpDateTime() {
+    public Double getLastUpDateTime() {
         return lastUpDateTime;
     }
 
-    public void setLastUpDateTime(String lastUpDateTime) {
+    public void setLastUpDateTime(Double lastUpDateTime) {
         this.lastUpDateTime = lastUpDateTime;
     }
 

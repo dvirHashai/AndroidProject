@@ -73,7 +73,7 @@ public class EventAddFragment extends Fragment {
                     if (timePicker.getTime() != null) {
                         Date date = new Date(datePicker.getDate());
                         Time time = new Time(timePicker.getTime());
-                        final Event event = new Event(Model.instace.getModelFirebase().getFirebaseEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", "");
+                        final Event event = new Event(Model.instace.getModelFirebase().getFirebaseEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", null);
                         if (imageBitmap != null) {
                             Model.instace.saveImage(imageBitmap, event.getId() + "jpeg", new Model.SaveImageListener() {
                                 @Override

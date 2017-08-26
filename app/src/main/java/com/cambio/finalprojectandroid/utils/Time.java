@@ -60,4 +60,11 @@ public class Time {
         return "" + hour +
                 ":" + minute;
     }
+
+    public Time createTimeObjectFromString(String stringTime){
+        String[] timeElements = stringTime.split(":");
+
+        Time time = new Time(Integer.parseInt(timeElements[0]),Integer.parseInt(timeElements[1]));
+        return time;
+    }
 }

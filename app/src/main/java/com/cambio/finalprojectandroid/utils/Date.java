@@ -75,4 +75,11 @@ public class Date {
                 "/" + year
                 ;
     }
+
+    public Date createDateObjectFromString(String stringDate){
+        String[] dateElements = stringDate.split("/");
+
+        Date date = new Date(Integer.parseInt(dateElements[0]),Integer.parseInt(dateElements[1]),Integer.parseInt(dateElements[2]));
+        return date;
+    }
 }

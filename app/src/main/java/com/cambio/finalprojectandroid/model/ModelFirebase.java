@@ -2,11 +2,15 @@ package com.cambio.finalprojectandroid.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import com.cambio.finalprojectandroid.utils.Date;
 import com.cambio.finalprojectandroid.utils.Time;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -16,6 +20,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +29,8 @@ import java.util.Map;
  */
 
 public class ModelFirebase {
+
+    List<ChildEventListener> listeners = new LinkedList<ChildEventListener>();
     public  void addEvent(Event event) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
@@ -60,6 +68,49 @@ public class ModelFirebase {
                 listener.complete(downloadUrl.toString());
             }
         });
+    }
+
+    interface RegisterEventsUpdatesCallback{
+        void onEventUpdate(Event event);
+    }
+    public void RegisterEventsUpdates(double lastUpdateDate,
+                                        final RegisterEventsUpdatesCallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("events");
+        myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate);
+        ChildEventListener listener = myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Log.d("TAG","onChildAdded called");
+                        Event event = dataSnapshot.getValue(Event.class);
+                        callback.onEventUpdate(event);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Event event = dataSnapshot.getValue(Event.class);
+                        callback.onEventUpdate(event);
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        Event event = dataSnapshot.getValue(Event.class);
+                        callback.onEventUpdate(event);
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                        Event event = dataSnapshot.getValue(Event.class);
+                        callback.onEventUpdate(event);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+        listeners.add(listener);
     }
 
     public String getFirebaseEntityId(){
