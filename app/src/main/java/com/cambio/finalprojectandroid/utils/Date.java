@@ -22,6 +22,9 @@ public class Date {
         this.dayOfMonth = date.getDayOfMonth();
     }
 
+    public Date(){
+
+    }
     public int getYear() {
         return year;
     }
@@ -76,7 +79,7 @@ public class Date {
                 ;
     }
 
-    public Date createDateObjectFromString(String stringDate){
+    public static Date createDateObjectFromString(String stringDate){
         String[] dateElements = stringDate.split("/");
 
         Date date = new Date(Integer.parseInt(dateElements[0]),Integer.parseInt(dateElements[1]),Integer.parseInt(dateElements[2]));

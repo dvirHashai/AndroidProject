@@ -5,11 +5,21 @@
     android:layout_height="wrap_content"
     android:weightSum="3">
 
-    <ImageView
-        android:id="@+id/event_list_row_image"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="118dp"
-        android:src="@drawable/avatar" />
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/event_list_row_image"
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:src="@drawable/avatar" />
+        <ProgressBar
+            android:id="@+id/event_list_row_progressBar"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_width="70dp"
+            android:visibility="gone"
+            android:layout_height="70dp" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

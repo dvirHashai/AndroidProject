@@ -20,6 +20,9 @@ public class Time {
         this.minute = time.getMinute();
     }
 
+    public Time(){
+
+    }
     public int getHour() {
         return hour;
     }
@@ -61,7 +64,7 @@ public class Time {
                 ":" + minute;
     }
 
-    public Time createTimeObjectFromString(String stringTime){
+    public static Time createTimeObjectFromString(String stringTime){
         String[] timeElements = stringTime.split(":");
 
         Time time = new Time(Integer.parseInt(timeElements[0]),Integer.parseInt(timeElements[1]));

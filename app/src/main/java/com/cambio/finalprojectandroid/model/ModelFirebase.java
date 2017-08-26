@@ -1,6 +1,7 @@
 package com.cambio.finalprojectandroid.model;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
@@ -26,7 +27,9 @@ import java.util.Map;
 
 /**
  * Created by dvirh on 8/24/2017.
+ *
  */
+
 
 public class ModelFirebase {
 
@@ -70,11 +73,37 @@ public class ModelFirebase {
         });
     }
 
+    public void getImage(String url, final Model.GetImageListener listener){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference httpsReference = storage.getReferenceFromUrl(url);
+        final long ONE_MEGABYTE = 1024 * 1024;
+        httpsReference.getBytes(3* ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap image = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                listener.onSuccess(image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception exception) {
+                Log.d("TAG",exception.getMessage());
+                listener.onFail();
+            }
+        });
+    }
+
+
+
+
     interface RegisterEventsUpdatesCallback{
         void onEventUpdate(Event event);
     }
-    public void RegisterEventsUpdates(double lastUpdateDate,
+    public void synchAndRegisterEventData(double lastUpdateDate,
                                         final RegisterEventsUpdatesCallback callback) {
+        /*if(studentlistener != null){
+            FirebaseDatabase
+            return;
+        }*/
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
         myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate);

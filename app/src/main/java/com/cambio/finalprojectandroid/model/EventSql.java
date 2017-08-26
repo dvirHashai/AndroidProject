@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.cambio.finalprojectandroid.utils.Date;
+import com.cambio.finalprojectandroid.utils.Time;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +28,7 @@ public class EventSql {
     static final String EVENT_LAST_UPDATE = "lastUpdateDate";
 
     static List<Event> getAllEvents(SQLiteDatabase db) {
+        Log.d("TAG","EventSql : getAllEvents() ");
         Cursor cursor = db.query("events", null, null, null, null, null, null);
         List<Event> list = new LinkedList<Event>();
         if (cursor.moveToFirst()) {
@@ -41,8 +45,8 @@ public class EventSql {
                 Event event = new Event();
                 event.setId(cursor.getString(idIndex));
                 event.setName(cursor.getString(nameIndex));
-                event.setDate(event.getDate().createDateObjectFromString(cursor.getString(dateIndex)));
-                event.setTime(event.getTime().createTimeObjectFromString(cursor.getString(timeIndex)));
+                event.setDate(Date.createDateObjectFromString(cursor.getString(dateIndex)));
+                event.setTime(Time.createTimeObjectFromString(cursor.getString(timeIndex)));
                 event.setPrice(cursor.getString(priceIndex));
                 event.setLocation(cursor.getString(locationIndex));
                 event.setImageUrl(cursor.getString(imageUrlIndex));

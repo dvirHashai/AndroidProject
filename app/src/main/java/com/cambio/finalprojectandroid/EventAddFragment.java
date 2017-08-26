@@ -73,26 +73,28 @@ public class EventAddFragment extends Fragment {
                     if (timePicker.getTime() != null) {
                         Date date = new Date(datePicker.getDate());
                         Time time = new Time(timePicker.getTime());
-                        final Event event = new Event(Model.instace.getModelFirebase().getFirebaseEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", null);
-                        if (imageBitmap != null) {
-                            Model.instace.saveImage(imageBitmap, event.getId() + "jpeg", new Model.SaveImageListener() {
-                                @Override
-                                public void complete(String url) {
-                                    event.setImageUrl(url);
-                                    Model.instace.addEvent(event);
-                                    progressBar.setVisibility(GONE);
-                                }
+                        if (Model.instace != null) {
+                            final Event event = new Event(Model.instace.getModelFirebase().getFirebaseEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", 0);
+                            if (imageBitmap != null) {
+                                Model.instace.saveImage(imageBitmap, event.getId() + "jpeg", new Model.SaveImageListener() {
+                                    @Override
+                                    public void complete(String url) {
+                                        event.setImageUrl(url);
+                                        Model.instace.addEvent(event);
+                                        progressBar.setVisibility(GONE);
+                                    }
 
-                                @Override
-                                public void fail() {
-                                    progressBar.setVisibility(GONE);
+                                    @Override
+                                    public void fail() {
+                                        progressBar.setVisibility(GONE);
 
-                                }
-                            });
-                        } else {
-                            Model.instace.addEvent(event);
-                            progressBar.setVisibility(GONE);
+                                    }
+                                });
+                            } else {
+                                Model.instace.addEvent(event);
+                                progressBar.setVisibility(GONE);
 
+                            }
                         }
                     }
                 }

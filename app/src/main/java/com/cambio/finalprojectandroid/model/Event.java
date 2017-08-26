@@ -19,11 +19,11 @@ public class Event implements Serializable {
     private String price;
     private String location;
     private String imageUrl;
-    private Double lastUpDateTime;
+    private double lastUpDateTime;
 
 
 
-    public Event(String id, String name, Date date, Time time, String price, String location, String imageUrl, Double lastUpDateTime) {
+    public Event(String id, String name, Date date, Time time, String price, String location, String imageUrl, double lastUpDateTime) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -105,13 +105,14 @@ public class Event implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Double getLastUpDateTime() {
+    public double getLastUpDateTime() {
         return lastUpDateTime;
     }
 
-    public void setLastUpDateTime(Double lastUpDateTime) {
+    public void setLastUpDateTime(double lastUpDateTime) {
         this.lastUpDateTime = lastUpDateTime;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -120,41 +121,31 @@ public class Event implements Serializable {
 
         Event event = (Event) o;
 
-        if (!id.equals(event.id)) return false;
-        if (!name.equals(event.name)) return false;
-        if (!date.equals(event.date)) return false;
-        if (!time.equals(event.time)) return false;
-        if (!price.equals(event.price)) return false;
-        if (!location.equals(event.location)) return false;
-        if (!imageUrl.equals(event.imageUrl)) return false;
-        return lastUpDateTime.equals(event.lastUpDateTime);
+        if (Double.compare(event.lastUpDateTime, lastUpDateTime) != 0) return false;
+        if (id != null ? !id.equals(event.id) : event.id != null) return false;
+        if (name != null ? !name.equals(event.name) : event.name != null) return false;
+        if (date != null ? !date.equals(event.date) : event.date != null) return false;
+        if (time != null ? !time.equals(event.time) : event.time != null) return false;
+        if (price != null ? !price.equals(event.price) : event.price != null) return false;
+        if (location != null ? !location.equals(event.location) : event.location != null)
+            return false;
+        return imageUrl != null ? imageUrl.equals(event.imageUrl) : event.imageUrl == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + date.hashCode();
-        result = 31 * result + time.hashCode();
-        result = 31 * result + price.hashCode();
-        result = 31 * result + location.hashCode();
-        result = 31 * result + imageUrl.hashCode();
-        result = 31 * result + lastUpDateTime.hashCode();
+        int result;
+        long temp;
+        result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        temp = Double.doubleToLongBits(lastUpDateTime);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", date=" + date +
-                ", time=" + time +
-                ", price='" + price + '\'' +
-                ", location='" + location + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", lastUpDateTime='" + lastUpDateTime + '\'' +
-                '}';
     }
 }

@@ -17,20 +17,29 @@ import static com.cambio.finalprojectandroid.model.ModelFiles.saveImageToFile;
 
 /**
  * Created by dvirh on 8/22/2017.
+ * EventUpdateEvent method to notify event from firebase
  */
 
 public class Model {
-    public final static Model instace = new Model();
+    public static Model instace;
 
     private ModelMem modelMem;
     private ModelSql modelSql;
     private ModelFirebase modelFirebase;
 
+
     private Model() {
         modelMem = new ModelMem();
-       // modelSql = new ModelSql(MyApplication.getMyContext());
+        modelSql = new ModelSql(MyApplication.getMyContext());
         modelFirebase = new ModelFirebase();
-        //synchStudentsDbAndregisterStudentsUpdates();
+        synchAndRegisterEventData();
+
+    }
+
+    public static void getInstance() {
+        if (instace == null) {
+            instace = new Model();
+        }
     }
 
     public ModelMem getModelMem() {
@@ -57,12 +66,14 @@ public class Model {
         this.modelFirebase = modelFirebase;
     }
 
-    public void addEvent(Event event){
+    public void addEvent(Event event) {
         modelFirebase.addEvent(event);
+        //EventBus.getDefault().post(new EventUpdateEvent(event));
     }
 
     public interface SaveImageListener {
         void complete(String url);
+
         void fail();
     }
 
@@ -71,7 +82,7 @@ public class Model {
             @Override
             public void complete(String url) {
                 String fileName = URLUtil.guessFileName(url, null, null);
-                saveImageToFile(imageBmp,fileName);
+                saveImageToFile(imageBmp, fileName);
                 listener.complete(url);
             }
 
@@ -84,53 +95,96 @@ public class Model {
 
     }
 
-  /*  public interface GetAllStudentsAndObserveCallback {
-        void onComplete(List<Event> list);
-        void onCancel();
+
+    public interface GetImageListener {
+        void onSuccess(Bitmap image);
+
+        void onFail();
     }
 
-    private void synchStudentsDbAndregisterStudentsUpdates() {
-        //1. get local lastUpdateTade
-        SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
-        final double lastUpdateDate = pref.getFloat("StudnetsLastUpdateDate",0);
-        Log.d("TAG","lastUpdateDate: " + lastUpdateDate);
-
-        modelFirebase.RegisterEventsUpdates(lastUpdateDate,new ModelFirebase.RegisterEventsUpdatesCallback() {
+    public void getImage(final String url, final GetImageListener listener) {
+        //check if image exsist localy
+        final String fileName = URLUtil.guessFileName(url, null, null);
+        ModelFiles.loadImageFromFileAsynch(fileName, new ModelFiles.LoadImageFromFileAsynch() {
             @Override
-            public void onStudentUpdate(Event event) {
-                //3. update the local db
-                EventSql.addStudent(modelSql.getWritableDatabase(),event);
-                //4. update the lastUpdateTade
-                SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
-                final double lastUpdateDate = pref.getFloat("StudnetsLastUpdateDate",0);
-                if (lastUpdateDate < event.lastUpdateDate){
-                    SharedPreferences.Editor prefEd = MyApplication.getMyContext().getSharedPreferences("TAG",
-                            Context.MODE_PRIVATE).edit();
-                    prefEd.putFloat("StudnetsLastUpdateDate", (float) event.lastUpdateDate);
-                    prefEd.commit();
-                    Log.d("TAG","StudnetsLastUpdateDate: " + event.lastUpdateDate);
-                }
+            public void onComplete(Bitmap bitmap) {
+                if (bitmap != null) {
+                    Log.d("TAG", "getImage from local success " + fileName);
+                    listener.onSuccess(bitmap);
+                } else {
+                    modelFirebase.getImage(url, new GetImageListener() {
+                        @Override
+                        public void onSuccess(Bitmap image) {
+                            String fileName = URLUtil.guessFileName(url, null, null);
+                            Log.d("TAG", "getImage from FB success " + fileName);
+                            saveImageToFile(image, fileName);
+                            listener.onSuccess(image);
+                        }
 
-                EventBus.getDefault().post(new UpdateStudentEvent(student));
+                        @Override
+                        public void onFail() {
+                            Log.d("TAG", "getImage from FB fail ");
+                            listener.onFail();
+                        }
+                    });
+
+                }
             }
         });
     }
 
-    public void getAllStudents(final GetAllStudentsAndObserveCallback callback){
+
+    public interface GetAllEventsAndObserveCallback {
+        void onComplete(List<Event> list);
+
+        void onCancel();
+    }
+
+    private void synchAndRegisterEventData() {
+        //1. get local lastUpdateTade
+        if (MyApplication.getMyContext() != null) {
+            SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+            final double lastUpdateDate = pref.getFloat("EventsLastUpdateDate", 0);
+            Log.d("TAG", "lastUpdateDate: " + lastUpdateDate);
+
+            modelFirebase.synchAndRegisterEventData(lastUpdateDate, new ModelFirebase.RegisterEventsUpdatesCallback() {
+                @Override
+                public void onEventUpdate(Event event) {
+                    //3. update the local db
+                    EventSql.addEvent(modelSql.getWritableDatabase(), event);
+                    //4. update the lastUpdateTade
+                    SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+                    final double lastUpdateDate = pref.getFloat("EventsLastUpdateDate", 0);
+                    if (lastUpdateDate < event.getLastUpDateTime()) {
+                        SharedPreferences.Editor prefEd = MyApplication.getMyContext().getSharedPreferences("TAG",
+                                Context.MODE_PRIVATE).edit();
+                        prefEd.putFloat("EventsLastUpdateDate", (float) event.getLastUpDateTime());
+                        prefEd.commit();
+                        Log.d("TAG", "EventsLastUpdateDate: " + event.getLastUpDateTime());
+                    }
+
+                    EventBus.getDefault().post(new EventUpdateEvent(event));
+                }
+            });
+        }
+    }
+
+    public void getAllEvents(final GetAllEventsAndObserveCallback callback) {
 
         //5. read from local db
-        List<Student> data = StudentSql.getAllStudents(modelSql.getReadableDatabase());
+        List<Event> data = EventSql.getAllEvents(modelSql.getReadableDatabase());
 
-        //6. return list of students
+        //6. return list of Events
         callback.onComplete(data);
 
     }
 
-    public class UpdateStudentEvent {
-        public final Student student;
-        public UpdateStudentEvent(Student student) {
-            this.student = student;
+    public class EventUpdateEvent {
+        public final Event event;
+
+        public EventUpdateEvent(Event event) {
+            this.event = event;
         }
     }
-*/
+
 }
