@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -48,21 +49,25 @@ public class EventListFragment extends Fragment {
     public void onMessageEvent(Model.EventUpdateEvent event) {
         Toast.makeText(getActivity(), "got new event item event", Toast.LENGTH_SHORT).show();
         boolean exist = false;
-        for (Event eventItem: data){
-            if (eventItem.getId().equals(event.event.getId())){
-                eventItem = event.event;
+        for (Event eventItem : data) {
+           /* Log.d("TAG","onMessageEvent " + eventItem.getId() +" " +"equals: " + event.event.getId());
+            Log.d("TAG",eventItem.toString() + " " + event.event.toString());*/
+            if (eventItem.getId().equals(event.event.getId())) {
+                Log.d("TAG","onMessageEvent " + eventItem.getId() + "equals: " + event.event.getId());
+                eventItem.setEvent(event.event);
+                /*data.remove(Integer.parseInt(eventItem.getId()));
+                data.add(event.event);*/
                 exist = true;
                 break;
             }
         }
-        if (!exist){
+        if (!exist) {
             data.add(event.event);
         }
         adapter.notifyDataSetChanged();
         list.setSelection(adapter.getCount() - 1);
 
     }
-
 
 
     public EventListFragment() {
@@ -95,7 +100,7 @@ public class EventListFragment extends Fragment {
         adapter = new EventListAdapter();
         list.setAdapter(adapter);
         Model.getInstance();
-        if(Model.instace != null) {
+        if (Model.instace != null) {
 
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -122,19 +127,17 @@ public class EventListFragment extends Fragment {
         }
 
 
-
 //TODO getActivity().invalidateOptionsMenu();
         return contextView;
     }
 
 
-
-    public void checkPermissions(){
+    public void checkPermissions() {
         boolean hasPermission = (ContextCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED);
         if (!hasPermission) {
-            ActivityCompat.requestPermissions(getActivity(),new String[]{
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE);
         }
     }
@@ -198,30 +201,32 @@ public class EventListFragment extends Fragment {
             final ImageView imageView = (ImageView) convertView.findViewById(R.id.event_list_row_image);
             final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.event_list_row_progressBar);
 
+            if (date != null) {
+                final Event event = data.get(position);
+                name.setText(event.getName());
+                date.setText(event.getDate().toString());
+                imageView.setTag(event.getImageUrl());
+                imageView.setImageResource(R.drawable.avatar);
 
-            final Event event = data.get(position);
-            name.setText(event.getName());
-            date.setText(event.getDate().toString());
-            imageView.setTag(event.getImageUrl());
-            imageView.setImageResource(R.drawable.avatar);
+                if (event.getImageUrl() != null && !event.getImageUrl().isEmpty() && !event.getImageUrl().equals("")) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    Model.instace.getImage(event.getImageUrl(), new Model.GetImageListener() {
+                        @Override
+                        public void onSuccess(Bitmap image) {
+                            String tagUrl = imageView.getTag().toString();
+                            if (tagUrl.equals(event.getImageUrl())) {
+                                imageView.setImageBitmap(image);
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
 
-            if (event.getImageUrl() != null && !event.getImageUrl().isEmpty() && !event.getImageUrl().equals("")){
-                progressBar.setVisibility(View.VISIBLE);
-                Model.instace.getImage(event.getImageUrl(), new Model.GetImageListener() {
-                    @Override
-                    public void onSuccess(Bitmap image) {
-                        String tagUrl = imageView.getTag().toString();
-                        if (tagUrl.equals(event.getImageUrl())) {
-                            imageView.setImageBitmap(image);
+                        @Override
+                        public void onFail() {
                             progressBar.setVisibility(View.GONE);
                         }
-                    }
+                    });
+                }
 
-                    @Override
-                    public void onFail() {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
             }
 
             return convertView;

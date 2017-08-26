@@ -2,7 +2,10 @@ package com.cambio.finalprojectandroid;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.cambio.finalprojectandroid.model.Event;
 import com.cambio.finalprojectandroid.model.Model;
@@ -18,9 +22,15 @@ import com.cambio.finalprojectandroid.utils.Time;
 import com.cambio.finalprojectandroid.widget.MyDatePicker;
 import com.cambio.finalprojectandroid.widget.MyTimePicker;
 
+import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
+
 
 public class EventEditFragment extends Fragment {
-
+     Event event1;
+    ImageView imageView;
+    Bitmap imageBitmap;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String EVENT_ID = "eventId";
 
     private String eventId;
@@ -61,13 +71,49 @@ public class EventEditFragment extends Fragment {
         final MyTimePicker eventTime = (MyTimePicker) contentView.findViewById(R.id.event_edit_time);
         final EditText eventLocation = (EditText) contentView.findViewById(R.id.event_edit_location);
         final EditText eventPrice = (EditText) contentView.findViewById(R.id.event_edit_price);
-        final Event event = Model.instace.getModelMem().getEvent(eventId);
+        final ProgressBar progressBar = (ProgressBar)contentView.findViewById(R.id.event_edit_progressBar);
+
+         Model.instace.getEvent(eventId, new Model.GetEventCallback() {
+             @Override
+             public void onComplete(Event event) {
+                 event1 = event;
+
+                 eventImage.setTag(event1.getImageUrl());
+                 eventImage.setImageResource(R.drawable.avatar);
+
+                     progressBar.setVisibility(View.VISIBLE);
+                     Model.instace.getImage(event1.getImageUrl(), new Model.GetImageListener() {
+                         @Override
+                         public void onSuccess(Bitmap image) {
+                             String tagUrl = eventImage.getTag().toString();
+                             if (tagUrl.equals(event1.getImageUrl())) {
+                                 eventImage.setImageBitmap(image);
+                                 imageBitmap = image;
+                                 progressBar.setVisibility(View.GONE);
+
+                             }
+                         }
+
+                         @Override
+                         public void onFail() {
+                             progressBar.setVisibility(View.GONE);
+                         }
+                     });
+
 
         eventName.setText(event.getName());
         eventDate.setText(event.getDate().toString());
         eventTime.setText(event.getTime().toString());
         eventLocation.setText(event.getLocation());
         eventPrice.setText(event.getPrice());
+             }
+
+             @Override
+             public void onCancel() {
+
+             }
+         });
+
         Button saveBtn = (Button) contentView.findViewById(R.id.event_edit_save_btn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,23 +121,36 @@ public class EventEditFragment extends Fragment {
 
                 if(eventDate.getDate() != null) {
                     if (eventTime.getTime() != null) {
-                        Date date = new Date(eventDate.getDate());
-                        Time time = new Time(eventTime.getTime());
+                       /* Date date = new Date(eventDate.getDate());
+                        Time time = new Time(eventTime.getTime());*/
 
-                        if (date != null && time != null) {
-                            Event newEvent = new Event(event.getId(),event.getName(),eventDate.getDate(),eventTime.getTime(),event.getPrice(),event.getLocation(),event.getImageUrl(),event.getLastUpDateTime());
-                            Event oldEvent = Model.instace.getModelMem().getEvent(newEvent.getId());
-                            oldEvent.setName(newEvent.getName());
-                            oldEvent.setDate(newEvent.getDate());
-                            oldEvent.setTime(newEvent.getTime());
-                            oldEvent.setImageUrl(newEvent.getImageUrl());
-                            oldEvent.setLocation(newEvent.getLocation());
-                            oldEvent.setPrice(newEvent.getPrice());
+
+                            final Event newEvent = new Event(event1.getId(),eventName.getText().toString(),eventDate.getDate(),eventTime.getTime(),eventPrice.getText().toString(),eventLocation.getText().toString(),eventImage.getTag().toString(),event1.getLastUpDateTime());
+                            if (imageBitmap != null) {
+                                Model.instace.saveImage(imageBitmap, newEvent.getId() + "jpeg", new Model.SaveImageListener() {
+                                    @Override
+                                    public void complete(String url) {
+                                        Log.d("TAG","saveImage: url - " + url);
+                                        newEvent.setImageUrl(url);
+                                        Model.instace.addEvent(newEvent);
+                                        progressBar.setVisibility(GONE);
+                                    }
+
+                                    @Override
+                                    public void fail() {
+                                        Log.d("TAG","saveImage: FAIL  " );
+                                        progressBar.setVisibility(GONE);
+
+                                    }
+                                });
+                            } else {
+                                Model.instace.addEvent(newEvent);
+                                progressBar.setVisibility(GONE);
+
+                            }
                             getActivity().invalidateOptionsMenu();
                             mListener.onSaveEventInteraction();
-                        } else {
-                            Log.d("TAG", "Time or Date is null");
-                        }
+
                     } else {
                         Log.d("TAG", "Time is null");
                     }
@@ -108,6 +167,14 @@ public class EventEditFragment extends Fragment {
                 getActivity().invalidateOptionsMenu();
                 mListener.onCancelEventInteraction();
 
+            }
+        });
+
+         imageView = (ImageView) contentView.findViewById(R.id.event_edit_image);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
             }
         });
 
@@ -140,5 +207,23 @@ public class EventEditFragment extends Fragment {
         void onDeleteEventInteraction();
 
         void onCancelEventInteraction();
+    }
+
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(imageBitmap);
+        }
     }
 }

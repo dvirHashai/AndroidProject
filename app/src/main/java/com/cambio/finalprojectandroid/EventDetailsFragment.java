@@ -86,7 +86,7 @@ public class EventDetailsFragment extends Fragment {
                 eventImage.setTag(event1.getImageUrl());
                 eventImage.setImageResource(R.drawable.avatar);
                 progressBar.setVisibility(View.VISIBLE);
-                Model.instace.getImage(event.getImageUrl(), new Model.GetImageListener() {
+                Model.instace.getImage(eventImage.getTag().toString(), new Model.GetImageListener() {
                     @Override
                     public void onSuccess(Bitmap image) {
                         String tagUrl = eventImage.getTag().toString();

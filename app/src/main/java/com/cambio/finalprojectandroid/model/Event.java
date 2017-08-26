@@ -46,7 +46,14 @@ public class Event implements Serializable {
     }
 
     public Event() {
-        
+        this.id = "";
+        this.name = "";
+        this.date = new Date();
+        this.time = new Time();
+        this.price = "";
+        this.location = "";
+        this.imageUrl = "";
+        this.lastUpDateTime = 0.0;
     }
 
     public String getId() {
@@ -111,6 +118,17 @@ public class Event implements Serializable {
 
     public void setLastUpDateTime(double lastUpDateTime) {
         this.lastUpDateTime = lastUpDateTime;
+    }
+
+    public void setEvent(Event event){
+        this.id = event.getId();
+        this.name = event.getName();
+        this.date = event.getDate();
+        this.time = event.getTime();
+        this.price = event.getPrice();
+        this.location = event.getLocation();
+        this.imageUrl = event.getImageUrl();
+        this.lastUpDateTime = event.getLastUpDateTime();
     }
 
 
