@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,6 +49,32 @@ public class ModelFirebase {
         value.put("lastUpdateDate", ServerValue.TIMESTAMP);
         myRef.child(event.getId()).setValue(value);
     }
+
+    interface GetEventCallback {
+        void onComplete(Event event);
+
+        void onCancel();
+    }
+
+    public void getEvent(String stId, final GetEventCallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("events");
+        myRef.child(stId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Event event = dataSnapshot.getValue(Event.class);
+                callback.onComplete(event);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onCancel();
+            }
+        });
+    }
+
+
+
 
     public void saveImage(Bitmap imageBmp, String name, final Model.SaveImageListener listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();

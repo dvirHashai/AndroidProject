@@ -2,6 +2,7 @@ package com.cambio.finalprojectandroid;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cambio.finalprojectandroid.model.Event;
@@ -74,17 +76,48 @@ public class EventDetailsFragment extends Fragment {
         final TextView eventTime = (TextView) contentView.findViewById(R.id.event_details_time);
         final TextView eventLocation = (TextView) contentView.findViewById(R.id.event_details_location);
         final TextView eventPrice = (TextView) contentView.findViewById(R.id.event_details_price);
+        final ProgressBar progressBar = (ProgressBar)contentView.findViewById(R.id.event_details_progressBar);
+
+        Model.instace.getEvent(eventId, new Model.GetEventCallback() {
+            @Override
+            public void onComplete(Event event) {
+                //TODO set image in top details
+                final Event event1 = event;
+                eventImage.setTag(event1.getImageUrl());
+                eventImage.setImageResource(R.drawable.avatar);
+                progressBar.setVisibility(View.VISIBLE);
+                Model.instace.getImage(event.getImageUrl(), new Model.GetImageListener() {
+                    @Override
+                    public void onSuccess(Bitmap image) {
+                        String tagUrl = eventImage.getTag().toString();
+                        if (tagUrl.equals(event1.getImageUrl())) {
+                            eventImage.setImageBitmap(image);
+                            progressBar.setVisibility(View.GONE);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+                eventName.setText(event.getName());
+                eventDate.setText(event.getDate().toString());
+                eventTime.setText(event.getTime().toString());
+                eventLocation.setText(event.getLocation());
+                eventPrice.setText(event.getPrice());
+                //TODO interface method to transfer the id of the student to the edit fragment by option menu in the main activity
+                Model.instace.getModelMem().setEventId(eventId);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
 
 
-        final Event event = Model.instace.getModelMem().getEvent(eventId);
-        //TODO set image in top details
-        eventName.setText(event.getName());
-        eventDate.setText(event.getDate().toString());
-        eventTime.setText(event.getTime().toString());
-        eventLocation.setText(event.getLocation());
-        eventPrice.setText(event.getPrice());
-        //TODO interface method to transfer the id of the student to the edit fragment by option menu in the main activity
-        Model.instace.getModelMem().setEventId(eventId);
         getActivity().invalidateOptionsMenu();
         return contentView;
     }

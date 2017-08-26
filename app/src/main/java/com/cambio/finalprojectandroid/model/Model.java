@@ -71,6 +71,28 @@ public class Model {
         //EventBus.getDefault().post(new EventUpdateEvent(event));
     }
 
+    public interface GetEventCallback {
+        void onComplete(Event event);
+
+        void onCancel();
+    }
+
+    public void getEvent(String stId, final GetEventCallback callback) {
+
+        modelFirebase.getEvent(stId, new ModelFirebase.GetEventCallback() {
+            @Override
+            public void onComplete(Event event) {
+                callback.onComplete(event);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
+
+    }
+
     public interface SaveImageListener {
         void complete(String url);
 
