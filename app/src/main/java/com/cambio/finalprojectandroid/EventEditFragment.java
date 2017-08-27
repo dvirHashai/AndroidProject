@@ -226,4 +226,8 @@ public class EventEditFragment extends Fragment {
             imageView.setImageBitmap(imageBitmap);
         }
     }
+
+    public String getEventId() {
+        return eventId;
+    }
 }

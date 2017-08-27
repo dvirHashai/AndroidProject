@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import static com.cambio.finalprojectandroid.model.DataStateChange.ADDED;
 import static com.cambio.finalprojectandroid.model.ModelFiles.saveImageToFile;
 
 /**
@@ -32,9 +33,9 @@ public class Model {
         modelMem = new ModelMem();
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFirebase = new ModelFirebase();
-        synchAndRegisterEventData();
+         synchAndRegisterEventData();
 
-        //modelSql.onUpgrade(modelSql.getWritableDatabase(),3,4);
+         //modelSql.onUpgrade(modelSql.getWritableDatabase(),6,7);
 
     }
 
@@ -173,9 +174,20 @@ public class Model {
 
             modelFirebase.synchAndRegisterEventData(lastUpdateDate, new ModelFirebase.RegisterEventsUpdatesCallback() {
                 @Override
-                public void onEventUpdate(Event event) {
-                    //3. update the local db
-                    EventSql.addEvent(modelSql.getWritableDatabase(), event);
+                public void onEventUpdate(Event event, DataStateChange stateChange) {
+                    switch (stateChange) {
+                        case ADDED:
+                            //3. update the local db
+                            EventSql.addEvent(modelSql.getWritableDatabase(), event);
+                            break;
+                        case REMOVED:
+                            EventSql.deleteEventItem(modelSql.getWritableDatabase(), event.getId());
+                            break;
+                        case CHANGED:
+                            //TODO EventSql updatechangeQuery
+
+                            break;
+                    }
                     //4. update the lastUpdateTade
                     SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
                     final double lastUpdateDate = pref.getFloat("EventsLastUpdateDate", 0);
@@ -186,8 +198,9 @@ public class Model {
                         prefEd.commit();
                         Log.d("TAG", "EventsLastUpdateDate: " + event.getLastUpDateTime());
                     }
+                    EventBus.getDefault().post(new EventUpdateEvent(event, stateChange));
 
-                    EventBus.getDefault().post(new EventUpdateEvent(event));
+
                 }
             });
         }
@@ -205,10 +218,16 @@ public class Model {
 
     public class EventUpdateEvent {
         public final Event event;
+        public final DataStateChange stateChange;
 
-        public EventUpdateEvent(Event event) {
+        public EventUpdateEvent(Event event, DataStateChange stateChange) {
             this.event = event;
+            this.stateChange = stateChange;
         }
+    }
+
+    public void deleteEventItem(String eventId) {
+        modelFirebase.deleteEventItem(eventId);
     }
 
 }

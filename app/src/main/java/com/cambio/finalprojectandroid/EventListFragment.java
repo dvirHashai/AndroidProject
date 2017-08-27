@@ -49,18 +49,30 @@ public class EventListFragment extends Fragment {
     public void onMessageEvent(Model.EventUpdateEvent event) {
         Toast.makeText(getActivity(), "got new event item event", Toast.LENGTH_SHORT).show();
         boolean exist = false;
-        for (Event eventItem : data) {
-           /* Log.d("TAG","onMessageEvent " + eventItem.getId() +" " +"equals: " + event.event.getId());
-            Log.d("TAG",eventItem.toString() + " " + event.event.toString());*/
-            if (eventItem.getId().equals(event.event.getId())) {
-                Log.d("TAG","onMessageEvent " + eventItem.getId() + "equals: " + event.event.getId());
-                eventItem.setEvent(event.event);
-                /*data.remove(Integer.parseInt(eventItem.getId()));
-                data.add(event.event);*/
-                exist = true;
+        switch(event.stateChange){
+            case ADDED:
+                data.add(event.event);
                 break;
-            }
+            case REMOVED:
+                for (Event eventItem : data) {
+                    if (eventItem.getId().equals(event.event.getId())) {
+
+                        data.remove(eventItem);
+                    }
+                }
+                break;
+            case CHANGED:
+                for (Event eventItem : data) {
+                    if (eventItem.getId().equals(event.event.getId())) {
+                        Log.d("TAG","onMessageEvent " + eventItem.getId() + "equals: " + event.event.getId());
+                        eventItem.setEvent(event.event);
+                        break;
+                    }
+                }
+                break;
+
         }
+
         if (!exist) {
             data.add(event.event);
         }

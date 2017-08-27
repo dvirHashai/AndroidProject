@@ -23,4 +23,5 @@ public class ModelSql extends SQLiteOpenHelper {
         EventSql.onUpgrade(db, oldVersion, newVersion);
     }
 
+
 }

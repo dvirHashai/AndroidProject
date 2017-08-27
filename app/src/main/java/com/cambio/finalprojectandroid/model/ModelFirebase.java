@@ -50,6 +50,12 @@ public class ModelFirebase {
         myRef.child(event.getId()).setValue(value);
     }
 
+    public void deleteEventItem(String eventId) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("events");
+        myRef.child(eventId).removeValue();
+    }
+
     interface GetEventCallback {
         void onComplete(Event event);
 
@@ -123,7 +129,7 @@ public class ModelFirebase {
 
 
     interface RegisterEventsUpdatesCallback{
-        void onEventUpdate(Event event);
+        void onEventUpdate(Event event , DataStateChange StateChange);
     }
     public void synchAndRegisterEventData(double lastUpdateDate,
                                         final RegisterEventsUpdatesCallback callback) {
@@ -138,27 +144,27 @@ public class ModelFirebase {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Log.d("TAG","onChildAdded called");
+                        Log.d("TAG","onChildAdded called " + s);
                         Event event = dataSnapshot.getValue(Event.class);
-                        callback.onEventUpdate(event);
+                        callback.onEventUpdate(event, DataStateChange.ADDED);
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                         Event event = dataSnapshot.getValue(Event.class);
-                        callback.onEventUpdate(event);
+                        callback.onEventUpdate(event, DataStateChange.CHANGED);
                     }
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
                         Event event = dataSnapshot.getValue(Event.class);
-                        callback.onEventUpdate(event);
+                        callback.onEventUpdate(event, DataStateChange.REMOVED);
                     }
 
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                         Event event = dataSnapshot.getValue(Event.class);
-                        callback.onEventUpdate(event);
+                        callback.onEventUpdate(event, DataStateChange.MOVED);
                     }
 
                     @Override

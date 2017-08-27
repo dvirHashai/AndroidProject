@@ -27,6 +27,9 @@ public class EventSql {
     static final String EVENT_IMAGE_URL = "imageUrl";
     static final String EVENT_LAST_UPDATE = "lastUpdateDate";
 
+    //query
+    static final String WHERE_DELETE_ID = "id=?";
+
     static List<Event> getAllEvents(SQLiteDatabase db) {
         Log.d("TAG","EventSql : getAllEvents() ");
         Cursor cursor = db.query("events", null, null, null, null, null, null);
@@ -95,4 +98,7 @@ public class EventSql {
     }
 
 
+    public static void deleteEventItem(SQLiteDatabase db, String eventId) {
+        db.delete(EVENT_TABLE, WHERE_DELETE_ID, new String[]{eventId});
+    }
 }

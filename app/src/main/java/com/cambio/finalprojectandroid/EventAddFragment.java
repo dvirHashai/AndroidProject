@@ -157,15 +157,15 @@ public class EventAddFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private void dispatchTakePictureIntent() {
-       /* Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+       /*    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }*/
-        /*   Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }*/
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+       /* Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 
         // where do we want to find the data?
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -174,20 +174,20 @@ public class EventAddFragment extends Fragment {
         Uri data = Uri.parse(pictureDirectoryPath);
 
         // set the data and type.  Get all image types.
-        photoPickerIntent.setDataAndType(data, "image/*");
+        photoPickerIntent.setDataAndType(data, "image*//*");
 
         // we will invoke this activity, and get something back from it.
-        startActivityForResult(photoPickerIntent, IMAGE_GALLERY_REQUEST);
+        startActivityForResult(photoPickerIntent, IMAGE_GALLERY_REQUEST);*/
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
-        }*/
-        if (resultCode == RESULT_OK) {
+        }
+        /*if (resultCode == RESULT_OK) {
             // if we are here, everything processed successfully.
             if (requestCode == IMAGE_GALLERY_REQUEST) {
                 // if we are here, we are hearing back from the image gallery.
@@ -215,7 +215,7 @@ public class EventAddFragment extends Fragment {
                     Toast.makeText(getActivity(), "Unable to open image", Toast.LENGTH_LONG).show();
                 }
 
-            }
-        }
+            }*/
+       // }
     }
 }

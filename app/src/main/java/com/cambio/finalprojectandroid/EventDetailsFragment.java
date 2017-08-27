@@ -36,6 +36,8 @@ public class EventDetailsFragment extends Fragment {
     private String eventId;
 
 
+
+
     private OnFragmentInteractionListener mListener;
 
     public EventDetailsFragment() {
@@ -86,6 +88,7 @@ public class EventDetailsFragment extends Fragment {
                 eventImage.setTag(event1.getImageUrl());
                 eventImage.setImageResource(R.drawable.avatar);
                 progressBar.setVisibility(View.VISIBLE);
+                if (eventImage.getTag().toString() != null){
                 Model.instace.getImage(eventImage.getTag().toString(), new Model.GetImageListener() {
                     @Override
                     public void onSuccess(Bitmap image) {
@@ -102,6 +105,7 @@ public class EventDetailsFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                     }
                 });
+                }
                 eventName.setText(event.getName());
                 eventDate.setText(event.getDate().toString());
                 eventTime.setText(event.getTime().toString());
@@ -154,6 +158,13 @@ public class EventDetailsFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
+        void onDetailsEventInteraction();
+    }
 
+    public String getEventId() {
+        return eventId;
+    }
+    public OnFragmentInteractionListener getmListener() {
+        return mListener;
     }
 }
