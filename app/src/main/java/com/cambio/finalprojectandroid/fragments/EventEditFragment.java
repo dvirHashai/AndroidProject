@@ -1,4 +1,4 @@
-package com.cambio.finalprojectandroid;
+package com.cambio.finalprojectandroid.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -15,10 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.cambio.finalprojectandroid.R;
 import com.cambio.finalprojectandroid.model.Event;
 import com.cambio.finalprojectandroid.model.Model;
-import com.cambio.finalprojectandroid.utils.Date;
-import com.cambio.finalprojectandroid.utils.Time;
 import com.cambio.finalprojectandroid.widget.MyDatePicker;
 import com.cambio.finalprojectandroid.widget.MyTimePicker;
 

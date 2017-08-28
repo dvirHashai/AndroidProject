@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cambio.finalprojectandroid.EventEditFragment">
+    tools:context="com.cambio.finalprojectandroid.fragments.EventEditFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

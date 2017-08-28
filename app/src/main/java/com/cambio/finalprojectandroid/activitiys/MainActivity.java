@@ -1,4 +1,4 @@
-package com.cambio.finalprojectandroid;
+package com.cambio.finalprojectandroid.activitiys;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -9,6 +9,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.cambio.finalprojectandroid.R;
+import com.cambio.finalprojectandroid.fragments.EventAddFragment;
+import com.cambio.finalprojectandroid.fragments.EventDetailsFragment;
+import com.cambio.finalprojectandroid.fragments.EventEditFragment;
+import com.cambio.finalprojectandroid.fragments.EventListFragment;
 import com.cambio.finalprojectandroid.model.Model;
 
 public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener {
@@ -20,6 +25,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         eventListFragment = EventListFragment.newInstance();
         FragmentTransaction tran = getFragmentManager().beginTransaction();
