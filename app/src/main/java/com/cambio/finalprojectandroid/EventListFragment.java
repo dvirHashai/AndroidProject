@@ -48,7 +48,6 @@ public class EventListFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Model.EventUpdateEvent event) {
         Toast.makeText(getActivity(), "got new event item event", Toast.LENGTH_SHORT).show();
-        boolean exist = false;
         switch(event.stateChange){
             case ADDED:
                 data.add(event.event);
@@ -73,9 +72,6 @@ public class EventListFragment extends Fragment {
 
         }
 
-        if (!exist) {
-            data.add(event.event);
-        }
         adapter.notifyDataSetChanged();
         list.setSelection(adapter.getCount() - 1);
 
