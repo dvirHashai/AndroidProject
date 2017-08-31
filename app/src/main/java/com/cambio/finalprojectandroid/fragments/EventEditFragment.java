@@ -81,6 +81,7 @@ public class EventEditFragment extends Fragment {
                  eventImage.setImageResource(R.drawable.avatar);
 
                      progressBar.setVisibility(View.VISIBLE);
+                 if (!event1.getImageUrl().equals("")){
                      Model.instace.getImage(event1.getImageUrl(), new Model.GetImageListener() {
                          @Override
                          public void onSuccess(Bitmap image) {
@@ -98,6 +99,10 @@ public class EventEditFragment extends Fragment {
                              progressBar.setVisibility(View.GONE);
                          }
                      });
+                 }else {
+                     progressBar.setVisibility(View.GONE);
+                 }
+
 
 
         eventName.setText(event.getName());

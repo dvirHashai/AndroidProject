@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class ModelFirebase {
 
-    List<ChildEventListener> listeners = new LinkedList<ChildEventListener>();
+    ChildEventListener eventListener;
     public  void addEvent(Event event) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
@@ -133,14 +133,16 @@ public class ModelFirebase {
     }
     public void synchAndRegisterEventData(double lastUpdateDate,
                                         final RegisterEventsUpdatesCallback callback) {
-        /*if(studentlistener != null){
-            FirebaseDatabase
+        if(eventListener != null){
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("events");
+            myRef.removeEventListener(eventListener);
             return;
-        }*/
+        }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
         myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate);
-        ChildEventListener listener = myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate)
+        eventListener = myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -172,7 +174,7 @@ public class ModelFirebase {
 
                     }
                 });
-        listeners.add(listener);
+
     }
 
     public String getFirebaseEntityId(){

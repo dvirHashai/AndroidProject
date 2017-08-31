@@ -29,6 +29,8 @@ public class EventDetailsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String EVENT_ID = "eventId";
+    static final Event newEvent = new Event();
+
 
 
     // TODO: Rename and change types of parameters
@@ -83,28 +85,32 @@ public class EventDetailsFragment extends Fragment {
             @Override
             public void onComplete(Event event) {
                 //TODO set image in top details
-                final Event event1 = event;
-                eventImage.setTag(event1.getImageUrl());
+                newEvent.setEvent(event);
+                eventImage.setTag(newEvent.getImageUrl());
                 eventImage.setImageResource(R.drawable.avatar);
                 progressBar.setVisibility(View.VISIBLE);
-                if (eventImage.getTag().toString() != null){
-                Model.instace.getImage(eventImage.getTag().toString(), new Model.GetImageListener() {
-                    @Override
-                    public void onSuccess(Bitmap image) {
-                        String tagUrl = eventImage.getTag().toString();
-                        if (tagUrl.equals(event1.getImageUrl())) {
-                            eventImage.setImageBitmap(image);
-                            progressBar.setVisibility(View.GONE);
-
+                if (!newEvent.getImageUrl().equals("")){
+                    Model.instace.getImage(eventImage.getTag().toString(), new Model.GetImageListener() {
+                        @Override
+                        public void onSuccess(Bitmap image) {
+                            String tagUrl = eventImage.getTag().toString();
+                            if (tagUrl.equals(eventImage.getTag().toString())) {
+                                eventImage.setImageBitmap(image);
+                                progressBar.setVisibility(View.GONE);
+                            }else{
+                                progressBar.setVisibility(View.GONE);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFail() {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+                        @Override
+                        public void onFail() {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
+                }else {
+                    progressBar.setVisibility(View.GONE);
                 }
+
                 eventName.setText(event.getName());
                 eventDate.setText(event.getDate().toString());
                 eventTime.setText(event.getTime().toString());
@@ -119,6 +125,7 @@ public class EventDetailsFragment extends Fragment {
 
             }
         });
+
 
 
         getActivity().invalidateOptionsMenu();

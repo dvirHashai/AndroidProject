@@ -28,7 +28,7 @@ public class EventSql {
     static final String EVENT_LAST_UPDATE = "lastUpdateDate";
 
     //query
-    static final String WHERE_DELETE_ID = "id=?";
+    static final String WHERE_EVENT_ID = "id=?";
 
     static List<Event> getAllEvents(SQLiteDatabase db) {
         Log.d("TAG","EventSql : getAllEvents() ");
@@ -59,8 +59,7 @@ public class EventSql {
         }
         return list;
     }
-
-    static void addEvent(SQLiteDatabase db, Event event) {
+    private static ContentValues getCaseValues(Event event) {
         ContentValues values = new ContentValues();
         values.put(EVENT_ID, event.getId());
         values.put(EVENT_NAME, event.getName());
@@ -70,8 +69,38 @@ public class EventSql {
         values.put(EVENT_LOCATION, event.getLocation());
         values.put(EVENT_IMAGE_URL, event.getImageUrl());
         values.put(EVENT_LAST_UPDATE, event.getLastUpDateTime());
-        db.insert(EVENT_TABLE, EVENT_ID, values);
+        return values;
     }
+
+    static boolean addEvent(SQLiteDatabase db, Event event) {
+        Cursor cursor = db.query(EVENT_TABLE, null, WHERE_EVENT_ID, new String[]{event.getId()}, null, null, null);
+        if (cursor.moveToFirst()) {
+            cursor.close();
+            return false;
+        }
+        db.insert(EVENT_TABLE, EVENT_ID, getCaseValues(event));
+        cursor.close();
+        return true;
+    }
+
+    static boolean onUpDateEventItem(SQLiteDatabase db, Event event){
+        Log.d("TAG", "STARTING UPDATE EventSQL " + event.getName());
+        Cursor cursor = db.query(EVENT_TABLE, null, WHERE_EVENT_ID, new String[]{event.getId()}, null, null, null);
+        if (cursor.moveToFirst()) {
+            db.update(EVENT_TABLE, getCaseValues(event), WHERE_EVENT_ID, new String[]{event.getId()});
+            cursor.close();
+            Log.d("TAG", "DONE WITH THE update in EventSQL " + event.getName());
+            return true;
+        }
+        cursor.close();
+        Log.d("TAG", "DONE WITH THE update in EventSQL " + event.getName());
+        return false;
+    }
+
+
+   /* public static String getEventImageUrl() {
+
+    }*/
 
     static Event getEvent(SQLiteDatabase db, String id) {
         return null;
@@ -99,6 +128,6 @@ public class EventSql {
 
 
     public static void deleteEventItem(SQLiteDatabase db, String eventId) {
-        db.delete(EVENT_TABLE, WHERE_DELETE_ID, new String[]{eventId});
+        db.delete(EVENT_TABLE, WHERE_EVENT_ID, new String[]{eventId});
     }
 }

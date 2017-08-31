@@ -33,9 +33,9 @@ public class Model {
         modelMem = new ModelMem();
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFirebase = new ModelFirebase();
-         synchAndRegisterEventData();
+        synchAndRegisterEventData();
 
-         //modelSql.onUpgrade(modelSql.getWritableDatabase(),7,8);
+        // modelSql.onUpgrade(modelSql.getWritableDatabase(),9,10);
 
     }
 
@@ -185,6 +185,7 @@ public class Model {
                             break;
                         case CHANGED:
                             //TODO EventSql updatechangeQuery
+                            EventSql.onUpDateEventItem(modelSql.getWritableDatabase(), event);
 
                             break;
                     }
@@ -227,6 +228,7 @@ public class Model {
     }
 
     public void deleteEventItem(String eventId) {
+
         modelFirebase.deleteEventItem(eventId);
     }
 
