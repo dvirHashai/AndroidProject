@@ -49,12 +49,13 @@ public class EventListFragment extends Fragment {
 
         switch(event.stateChange){
             case ADDED:
+                if (data.isEmpty()){
                     if (!data.contains(event.event)) {
-
                         data.add(event.event);
                         Toast.makeText(getActivity(), "New event is added", Toast.LENGTH_SHORT).show();
                         break;
                     }
+                }
 
 
                 break;

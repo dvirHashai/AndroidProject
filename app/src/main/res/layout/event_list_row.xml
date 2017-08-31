@@ -12,6 +12,7 @@
             android:id="@+id/event_list_row_image"
             android:layout_width="match_parent"
             android:layout_height="118dp"
+            android:scaleType="fitXY"
             android:src="@drawable/avatar" />
         <ProgressBar
             android:id="@+id/event_list_row_progressBar"
