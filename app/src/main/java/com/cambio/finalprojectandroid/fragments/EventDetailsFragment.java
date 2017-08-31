@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cambio.finalprojectandroid.R;
+import com.cambio.finalprojectandroid.model.CallBackInterface;
 import com.cambio.finalprojectandroid.model.Event;
 import com.cambio.finalprojectandroid.model.Model;
 
@@ -81,7 +82,7 @@ public class EventDetailsFragment extends Fragment {
         final TextView eventPrice = (TextView) contentView.findViewById(R.id.event_details_price);
         final ProgressBar progressBar = (ProgressBar)contentView.findViewById(R.id.event_details_progressBar);
 
-        Model.instace.getEvent(eventId, new Model.GetEventCallback() {
+        Model.instance.getEvent(eventId, new CallBackInterface.GetEventCallback() {
             @Override
             public void onComplete(Event event) {
                 //TODO set image in top details
@@ -90,7 +91,7 @@ public class EventDetailsFragment extends Fragment {
                 eventImage.setImageResource(R.drawable.avatar);
                 progressBar.setVisibility(View.VISIBLE);
                 if (!newEvent.getImageUrl().equals("")){
-                    Model.instace.getImage(eventImage.getTag().toString(), new Model.GetImageListener() {
+                    Model.instance.getImage(eventImage.getTag().toString(), new CallBackInterface.GetImageListener() {
                         @Override
                         public void onSuccess(Bitmap image) {
                             String tagUrl = eventImage.getTag().toString();
@@ -110,14 +111,13 @@ public class EventDetailsFragment extends Fragment {
                 }else {
                     progressBar.setVisibility(View.GONE);
                 }
-
                 eventName.setText(event.getName());
                 eventDate.setText(event.getDate().toString());
                 eventTime.setText(event.getTime().toString());
                 eventLocation.setText(event.getLocation());
                 eventPrice.setText(event.getPrice());
                 //TODO interface method to transfer the id of the student to the edit fragment by option menu in the main activity
-                Model.instace.getModelMem().setEventId(eventId);
+                Model.instance.getModelMem().setEventId(eventId);
             }
 
             @Override
@@ -125,7 +125,6 @@ public class EventDetailsFragment extends Fragment {
 
             }
         });
-
 
 
         getActivity().invalidateOptionsMenu();

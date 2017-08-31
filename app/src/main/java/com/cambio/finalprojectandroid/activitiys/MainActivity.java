@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,8 @@ import com.cambio.finalprojectandroid.fragments.EventEditFragment;
 import com.cambio.finalprojectandroid.fragments.EventListFragment;
 import com.cambio.finalprojectandroid.model.Model;
 
-public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener{
+
     EventListFragment eventListFragment;
     EventDetailsFragment eventDetailsFragment;
     EventEditFragment eventEditFragment;
@@ -84,9 +86,9 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
                 if (getFragmentManager().getBackStackEntryCount() >= 1){
                     currentFragment = getFragmentManager().findFragmentById(R.id.main_fragment_container);
                     if(currentFragment instanceof EventEditFragment){
-                        Model.instace.deleteEventItem(((EventEditFragment) currentFragment).getEventId());
+                        Model.instance.deleteEventItem(((EventEditFragment) currentFragment).getEventId());
                     }else if(currentFragment instanceof EventDetailsFragment){
-                        Model.instace.deleteEventItem(((EventDetailsFragment) currentFragment).getEventId());
+                        Model.instance.deleteEventItem(((EventDetailsFragment) currentFragment).getEventId());
                         ((EventDetailsFragment) currentFragment).getmListener().onDetailsEventInteraction();
                     }
                 }else {

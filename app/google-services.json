@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "269631953278-dhnj4hummvsnong6ns0fqkdj02j1qici.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cambio.finalprojectandroid",
+            "certificate_hash": "4e80be1eb978b4b0601d17c49e9cc3d0baac9863"
+          }
+        },
+        {
           "client_id": "269631953278-1dotmdt1r2t38d9du14nl49bhb92l33m.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269631953278-1dotmdt1r2t38d9du14nl49bhb92l33m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

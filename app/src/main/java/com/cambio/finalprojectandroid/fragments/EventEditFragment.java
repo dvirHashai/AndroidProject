@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.cambio.finalprojectandroid.R;
+import com.cambio.finalprojectandroid.model.CallBackInterface;
 import com.cambio.finalprojectandroid.model.Event;
 import com.cambio.finalprojectandroid.model.Model;
 import com.cambio.finalprojectandroid.widget.MyDatePicker;
@@ -72,7 +73,7 @@ public class EventEditFragment extends Fragment {
         final EditText eventPrice = (EditText) contentView.findViewById(R.id.event_edit_price);
         final ProgressBar progressBar = (ProgressBar)contentView.findViewById(R.id.event_edit_progressBar);
 
-         Model.instace.getEvent(eventId, new Model.GetEventCallback() {
+         Model.instance.getEvent(eventId, new CallBackInterface.GetEventCallback() {
              @Override
              public void onComplete(Event event) {
                  event1 = event;
@@ -82,7 +83,7 @@ public class EventEditFragment extends Fragment {
 
                      progressBar.setVisibility(View.VISIBLE);
                  if (!event1.getImageUrl().equals("")){
-                     Model.instace.getImage(event1.getImageUrl(), new Model.GetImageListener() {
+                     Model.instance.getImage(event1.getImageUrl(), new CallBackInterface.GetImageListener() {
                          @Override
                          public void onSuccess(Bitmap image) {
                              String tagUrl = eventImage.getTag().toString();
@@ -131,12 +132,12 @@ public class EventEditFragment extends Fragment {
 
                             final Event newEvent = new Event(event1.getId(),eventName.getText().toString(),eventDate.getDate(),eventTime.getTime(),eventPrice.getText().toString(),eventLocation.getText().toString(),eventImage.getTag().toString(),event1.getLastUpDateTime());
                             if (imageBitmap != null) {
-                                Model.instace.saveImage(imageBitmap, newEvent.getId() + "jpeg", new Model.SaveImageListener() {
+                                Model.instance.saveImage(imageBitmap, newEvent.getId() + "jpeg", new CallBackInterface.SaveImageListener() {
                                     @Override
                                     public void complete(String url) {
                                         Log.d("TAG","saveImage: url - " + url);
                                         newEvent.setImageUrl(url);
-                                        Model.instace.addEvent(newEvent);
+                                        Model.instance.addEvent(newEvent);
                                         progressBar.setVisibility(GONE);
                                     }
 
@@ -148,7 +149,7 @@ public class EventEditFragment extends Fragment {
                                     }
                                 });
                             } else {
-                                Model.instace.addEvent(newEvent);
+                                Model.instance.addEvent(newEvent);
                                 progressBar.setVisibility(GONE);
 
                             }
