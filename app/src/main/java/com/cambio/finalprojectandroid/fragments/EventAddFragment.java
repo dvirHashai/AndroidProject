@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.cambio.finalprojectandroid.utils.Time;
 import com.cambio.finalprojectandroid.widget.MyDatePicker;
 import com.cambio.finalprojectandroid.widget.MyTimePicker;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -159,41 +161,32 @@ public class EventAddFragment extends Fragment {
     static final int REQUEST_GALLERY_CAPTURE = 0;
 
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-       /* Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(pickPhoto , REQUEST_GALLERY_CAPTURE);//one can be replaced with any action code
-        }*/
-
-       /*    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+      /*  Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }*/
-       /* Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 
         // where do we want to find the data?
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         String pictureDirectoryPath = pictureDirectory.getPath();
         // finally, get a URI representation
         Uri data = Uri.parse(pictureDirectoryPath);
-
         // set the data and type.  Get all image types.
-        photoPickerIntent.setDataAndType(data, "image*//*");
+        photoPickerIntent.setDataAndType(data, "image/*");
 
         // we will invoke this activity, and get something back from it.
-        startActivityForResult(photoPickerIntent, IMAGE_GALLERY_REQUEST);*/
+        startActivityForResult(photoPickerIntent, IMAGE_GALLERY_REQUEST);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        /*if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
-        } else if (resultCode == RESULT_OK) {
+        } else*/
+        if (resultCode == RESULT_OK) {
             // if we are here, everything processed successfully.
             if (requestCode == IMAGE_GALLERY_REQUEST) {
                 // if we are here, we are hearing back from the image gallery.
