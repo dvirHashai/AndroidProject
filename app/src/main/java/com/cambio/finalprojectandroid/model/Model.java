@@ -35,7 +35,7 @@ public class Model {
         modelFirebase = new ModelFirebase();
         synchAndRegisterEventData();
 
-        // modelSql.onUpgrade(modelSql.getWritableDatabase(),9,10);
+        // modelSql.onUpgrade(modelSql.getWritableDatabase(),11,12);
 
     }
 
