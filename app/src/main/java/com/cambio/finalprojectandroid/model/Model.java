@@ -11,8 +11,10 @@ import com.cambio.finalprojectandroid.MyApplication;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.cambio.finalprojectandroid.model.DataStateChange.ADDED;
 import static com.cambio.finalprojectandroid.model.ModelFiles.saveImageToFile;
 
@@ -22,28 +24,38 @@ import static com.cambio.finalprojectandroid.model.ModelFiles.saveImageToFile;
  */
 
 public class Model {
-    public static Model instace;
 
+    //Static Members
+    public static Model instance;
+
+
+    //Members
     private ModelMem modelMem;
     private ModelSql modelSql;
     private ModelFirebase modelFirebase;
 
 
+    //Constructor
     private Model() {
         modelMem = new ModelMem();
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFirebase = new ModelFirebase();
-         synchAndRegisterEventData();
 
-         //modelSql.onUpgrade(modelSql.getWritableDatabase(),7,8);
+
+        synchAndRegisterEventData();
+
+        // modelSql.onUpgrade(modelSql.getWritableDatabase(),8,9);
 
     }
 
     public static void getInstance() {
-        if (instace == null) {
-            instace = new Model();
+        if (instance == null) {
+            instance = new Model();
         }
     }
+
+
+    //Public Methods
 
     public ModelMem getModelMem() {
         return modelMem;
@@ -74,13 +86,8 @@ public class Model {
         //EventBus.getDefault().post(new EventUpdateEvent(event));
     }
 
-    public interface GetEventCallback {
-        void onComplete(Event event);
 
-        void onCancel();
-    }
-
-    public void getEvent(String stId, final GetEventCallback callback) {
+    public void getEvent(String stId, final CallBackInterface.GetEventCallback callback) {
 
         modelFirebase.getEvent(stId, new ModelFirebase.GetEventCallback() {
             @Override
@@ -96,83 +103,15 @@ public class Model {
 
     }
 
-    public interface SaveImageListener {
-        void complete(String url);
-
-        void fail();
-    }
-
-    public void saveImage(final Bitmap imageBmp, final String name, final SaveImageListener listener) {
-        modelFirebase.saveImage(imageBmp, name, new SaveImageListener() {
-            @Override
-            public void complete(String url) {
-                String fileName = URLUtil.guessFileName(url, null, null);
-                saveImageToFile(imageBmp, fileName);
-                listener.complete(url);
-            }
-
-            @Override
-            public void fail() {
-                listener.fail();
-            }
-        });
-
-
-    }
-
-
-    public interface GetImageListener {
-        void onSuccess(Bitmap image);
-
-        void onFail();
-    }
-
-    public void getImage(final String url, final GetImageListener listener) {
-        //check if image exsist localy
-        final String fileName = URLUtil.guessFileName(url, null, null);
-        ModelFiles.loadImageFromFileAsynch(fileName, new ModelFiles.LoadImageFromFileAsynch() {
-            @Override
-            public void onComplete(Bitmap bitmap) {
-                if (bitmap != null) {
-                    Log.d("TAG", "getImage from local success " + fileName);
-                    listener.onSuccess(bitmap);
-                } else {
-                    modelFirebase.getImage(url, new GetImageListener() {
-                        @Override
-                        public void onSuccess(Bitmap image) {
-                            String fileName = URLUtil.guessFileName(url, null, null);
-                            Log.d("TAG", "getImage from FB success " + fileName);
-                            saveImageToFile(image, fileName);
-                            listener.onSuccess(image);
-                        }
-
-                        @Override
-                        public void onFail() {
-                            Log.d("TAG", "getImage from FB fail ");
-                            listener.onFail();
-                        }
-                    });
-
-                }
-            }
-        });
-    }
-
-
-    public interface GetAllEventsAndObserveCallback {
-        void onComplete(List<Event> list);
-
-        void onCancel();
-    }
 
     private void synchAndRegisterEventData() {
         //1. get local lastUpdateTade
         if (MyApplication.getMyContext() != null) {
-            SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+            SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE);
             final double lastUpdateDate = pref.getFloat("EventsLastUpdateDate", 0);
             Log.d("TAG", "lastUpdateDate: " + lastUpdateDate);
 
-            modelFirebase.synchAndRegisterEventData(lastUpdateDate, new ModelFirebase.RegisterEventsUpdatesCallback() {
+            modelFirebase.synchAndRegisterEventData(lastUpdateDate, new CallBackInterface.RegisterEventsUpdatesCallback() {
                 @Override
                 public void onEventUpdate(Event event, DataStateChange stateChange) {
                     switch (stateChange) {
@@ -189,11 +128,11 @@ public class Model {
                             break;
                     }
                     //4. update the lastUpdateTade
-                    SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+                    SharedPreferences pref = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE);
                     final double lastUpdateDate = pref.getFloat("EventsLastUpdateDate", 0);
                     if (lastUpdateDate < event.getLastUpDateTime()) {
                         SharedPreferences.Editor prefEd = MyApplication.getMyContext().getSharedPreferences("TAG",
-                                Context.MODE_PRIVATE).edit();
+                                MODE_PRIVATE).edit();
                         prefEd.putFloat("EventsLastUpdateDate", (float) event.getLastUpDateTime());
                         prefEd.commit();
                         Log.d("TAG", "EventsLastUpdateDate: " + event.getLastUpDateTime());
@@ -206,7 +145,7 @@ public class Model {
         }
     }
 
-    public void getAllEvents(final GetAllEventsAndObserveCallback callback) {
+    public void getAllEvents(final CallBackInterface.GetAllEventsAndObserveCallback callback) {
 
         //5. read from local db
         List<Event> data = EventSql.getAllEvents(modelSql.getReadableDatabase());
@@ -229,5 +168,64 @@ public class Model {
     public void deleteEventItem(String eventId) {
         modelFirebase.deleteEventItem(eventId);
     }
+
+
+    public void saveImage(final Bitmap imageBmp, final String name, final CallBackInterface.SaveImageListener listener) {
+        modelFirebase.saveImage(imageBmp, name, new CallBackInterface.SaveImageListener() {
+            @Override
+            public void complete(String url) {
+                String fileName = URLUtil.guessFileName(url, null, null);
+                saveImageToFile(imageBmp, fileName);
+                listener.complete(url);
+            }
+
+            @Override
+            public void fail() {
+                listener.fail();
+            }
+        });
+
+
+    }
+
+
+    public void getImage(final String url, final CallBackInterface.GetImageListener listener) {
+        //check if image exsist localy
+        final String fileName = URLUtil.guessFileName(url, null, null);
+        ModelFiles.loadImageFromFileAsynch(fileName, new ModelFiles.LoadImageFromFileAsynch() {
+            @Override
+            public void onComplete(Bitmap bitmap) {
+                if (bitmap != null) {
+                    Log.d("TAG", "getImage from local success " + fileName);
+                    listener.onSuccess(bitmap);
+                } else {
+                    modelFirebase.getImage(url, new CallBackInterface.GetImageListener() {
+                        @Override
+                        public void onSuccess(Bitmap image) {
+                            String fileName = URLUtil.guessFileName(url, null, null);
+                            Log.d("TAG", "getImage from FB success " + fileName);
+                            saveImageToFile(image, fileName);
+                            listener.onSuccess(image);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Log.d("TAG", "getImage from FB fail ");
+                            listener.onFail();
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+
+    public void signOut() {
+        modelFirebase = null;
+        modelSql = null;
+        instance = null;
+    }
+
 
 }

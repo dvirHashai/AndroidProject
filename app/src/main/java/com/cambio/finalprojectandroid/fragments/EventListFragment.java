@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cambio.finalprojectandroid.R;
+import com.cambio.finalprojectandroid.model.CallBackInterface;
 import com.cambio.finalprojectandroid.model.Event;
 import com.cambio.finalprojectandroid.model.Model;
 
@@ -106,8 +107,8 @@ public class EventListFragment extends Fragment {
         list = (ListView) contextView.findViewById(R.id.event_list);
         adapter = new EventListAdapter();
         list.setAdapter(adapter);
-        Model.getInstance();
-        if (Model.instace != null) {
+
+        if (Model.instance != null) {
 
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -119,7 +120,7 @@ public class EventListFragment extends Fragment {
             });
 
 
-            Model.instace.getAllEvents(new Model.GetAllEventsAndObserveCallback() {
+            Model.instance.getAllEvents(new CallBackInterface.GetAllEventsAndObserveCallback() {
                 @Override
                 public void onComplete(List<Event> list) {
                     data = list;
@@ -217,7 +218,7 @@ public class EventListFragment extends Fragment {
 
                 if (event.getImageUrl() != null && !event.getImageUrl().isEmpty() && !event.getImageUrl().equals("")) {
                     progressBar.setVisibility(View.VISIBLE);
-                    Model.instace.getImage(event.getImageUrl(), new Model.GetImageListener() {
+                    Model.instance.getImage(event.getImageUrl(), new CallBackInterface.GetImageListener() {
                         @Override
                         public void onSuccess(Bitmap image) {
                             String tagUrl = imageView.getTag().toString();

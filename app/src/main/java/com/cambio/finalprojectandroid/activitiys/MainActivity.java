@@ -1,11 +1,10 @@
 package com.cambio.finalprojectandroid.activitiys;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
+import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,24 +15,23 @@ import com.cambio.finalprojectandroid.fragments.EventEditFragment;
 import com.cambio.finalprojectandroid.fragments.EventListFragment;
 import com.cambio.finalprojectandroid.model.Model;
 
-public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener{
+
     EventListFragment eventListFragment;
-    EventDetailsFragment eventDetailsFragment;
-    EventEditFragment eventEditFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         eventListFragment = EventListFragment.newInstance();
         FragmentTransaction tran = getFragmentManager().beginTransaction();
         tran.add(R.id.main_fragment_container, eventListFragment, "eventListFragment");
-
         tran.commit();
-    }
 
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -66,7 +64,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
                 return true;
             case R.id.main_edit:
-                EventEditFragment eventEditFragment = EventEditFragment.newInstance(Model.instace.getModelMem().getEventId());
+                EventEditFragment eventEditFragment = EventEditFragment.newInstance(Model.instance.getModelMem().getEventId());
                 tran = getFragmentManager().beginTransaction();
                 tran.replace(R.id.main_fragment_container, eventEditFragment);
                 tran.addToBackStack("");
@@ -78,13 +76,13 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
                 if (getFragmentManager().getBackStackEntryCount() >= 1){
                     currentFragment = getFragmentManager().findFragmentById(R.id.main_fragment_container);
                     if(currentFragment instanceof EventEditFragment){
-                        Model.instace.deleteEventItem(((EventEditFragment) currentFragment).getEventId());
+                        Model.instance.deleteEventItem(((EventEditFragment) currentFragment).getEventId());
                     }else if(currentFragment instanceof EventDetailsFragment){
-                        Model.instace.deleteEventItem(((EventDetailsFragment) currentFragment).getEventId());
+                        Model.instance.deleteEventItem(((EventDetailsFragment) currentFragment).getEventId());
                         ((EventDetailsFragment) currentFragment).getmListener().onDetailsEventInteraction();
                     }
                 }else {
-                    Log.d("TAG","MainActivity  R.id.main_delete getFragmentManager().getBackStackEntryCount() < 1");
+
                 }
 
 
@@ -143,6 +141,4 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
             getFragmentManager().popBackStack(backStackID, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
     }
-
-
 }

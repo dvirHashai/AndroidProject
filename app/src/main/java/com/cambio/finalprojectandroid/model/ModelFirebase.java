@@ -3,12 +3,23 @@ package com.cambio.finalprojectandroid.model;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.cambio.finalprojectandroid.R;
+import com.cambio.finalprojectandroid.activitiys.LoginActivity;
+import com.cambio.finalprojectandroid.activitiys.RegisterActivity;
 import com.cambio.finalprojectandroid.utils.Date;
 import com.cambio.finalprojectandroid.utils.Time;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,14 +39,16 @@ import java.util.Map;
 
 /**
  * Created by dvirh on 8/24/2017.
- *
  */
 
 
 public class ModelFirebase {
 
-    List<ChildEventListener> listeners = new LinkedList<ChildEventListener>();
-    public  void addEvent(Event event) {
+    List<ChildEventListener> listeners = new LinkedList<>();
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    public void addEvent(Event event) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
         Map<String, Object> value = new HashMap<>();
@@ -80,9 +93,7 @@ public class ModelFirebase {
     }
 
 
-
-
-    public void saveImage(Bitmap imageBmp, String name, final Model.SaveImageListener listener){
+    public void saveImage(Bitmap imageBmp, String name, final CallBackInterface.SaveImageListener listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
         StorageReference imagesRef = storage.getReference().child("images").child(name);
@@ -106,33 +117,28 @@ public class ModelFirebase {
         });
     }
 
-    public void getImage(String url, final Model.GetImageListener listener){
+    public void getImage(String url, final CallBackInterface.GetImageListener listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference httpsReference = storage.getReferenceFromUrl(url);
         final long ONE_MEGABYTE = 1024 * 1024;
-        httpsReference.getBytes(3* ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        httpsReference.getBytes(3 * ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                Bitmap image = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 listener.onSuccess(image);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception exception) {
-                Log.d("TAG",exception.getMessage());
+                Log.d("TAG", exception.getMessage());
                 listener.onFail();
             }
         });
     }
 
 
-
-
-    interface RegisterEventsUpdatesCallback{
-        void onEventUpdate(Event event , DataStateChange StateChange);
-    }
     public void synchAndRegisterEventData(double lastUpdateDate,
-                                        final RegisterEventsUpdatesCallback callback) {
+                                          final CallBackInterface.RegisterEventsUpdatesCallback callback) {
         /*if(studentlistener != null){
             FirebaseDatabase
             return;
@@ -144,7 +150,7 @@ public class ModelFirebase {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Log.d("TAG","onChildAdded called " + s);
+                        Log.d("TAG", "onChildAdded called " + s);
                         Event event = dataSnapshot.getValue(Event.class);
                         callback.onEventUpdate(event, DataStateChange.ADDED);
                     }
@@ -175,7 +181,48 @@ public class ModelFirebase {
         listeners.add(listener);
     }
 
-    public String getFirebaseEntityId(){
+
+
+   /* public static void syncAndRegisterCaseData(long lastUpdate, final CallBackInterface.RegisterCasesEvents callback) {
+        Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - pulling data from firebase");
+        myRef.orderByChild(SORT_CASE_LAST_UPDATE).startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildAdded " + aCase.getCaseTitle());
+                callback.onCaseUpdate(aCase, DataStateChange.ADDED);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildChanged " + aCase.getCaseTitle());
+                callback.onCaseUpdate(aCase, DataStateChange.CHANGED);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildRemoved " + aCase.getCaseTitle());
+                callback.onCaseUpdate(aCase, DataStateChange.REMOVED);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildMoved " + aCase.getCaseTitle());
+                callback.onCaseUpdate(aCase, DataStateChange.CHANGED);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }*/
+
+
+    public String getFirebaseEventEntityId() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
         String newKey = myRef.push().getKey();
@@ -183,4 +230,114 @@ public class ModelFirebase {
         return newKey;
 
     }
+
+    public String getFirebaseUserEntityId() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+        String newKey = myRef.push().getKey();
+
+        return newKey;
+
+    }
+
+
+    public static void addUser(User user) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+        Map<String, Object> value = new HashMap<>();
+        value.put("id", user.getUserId());
+        value.put("userEmail", user.getUserEmail());
+        value.put("userPassword", user.getUserPassword());
+
+        myRef.child(user.getUserId()).setValue(value);
+    }
+
+
+    public static String getCurrentLoggedUserId() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            return currentUser.getDisplayName();
+        } else {
+            return null;
+        }
+    }
+
+    public static void getUser(String accountId, final CallBackInterface.GetUserCallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+        Log.d("TAG", "accountId is " + accountId);
+        myRef.child(accountId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                callback.onComplete(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onCancel();
+            }
+        });
+    }
+
+
+    public void registerAccount(final RegisterActivity registerActivity, final String email, final String password, final String id, final CallBackInterface.RegisterUserCallBack callBack) {
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(registerActivity, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            Log.d("TAG", "createUserWithEmail:success -> " + email);
+                            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(id).build();
+                            if (user != null) {
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                callBack.onComplete(user, task);
+
+                                            }
+                                        });
+                            }
+                        } else {
+                            Toast.makeText(registerActivity, task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public void loginAccount(final LoginActivity loginActivity, final String email, final String password, final CallBackInterface.LoginUserCallBack callBack) {
+        mAuth = FirebaseAuth.getInstance();
+        if (!email.isEmpty()) {
+            if (!password.isEmpty()) {
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(loginActivity, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            callBack.onComplete(task);
+                        } else {
+                            Toast.makeText(loginActivity, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(loginActivity, "Password Is Empty", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(loginActivity, "Email Is Empty", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public static void signOut() {
+
+        Model.instance.signOut();
+        FirebaseAuth.getInstance().signOut();
+    }
+
+
 }
