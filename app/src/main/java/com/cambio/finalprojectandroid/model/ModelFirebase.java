@@ -44,7 +44,7 @@ import java.util.Map;
 
 public class ModelFirebase {
 
-    List<ChildEventListener> listeners = new LinkedList<>();
+    ChildEventListener eventListener;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -139,14 +139,16 @@ public class ModelFirebase {
 
     public void synchAndRegisterEventData(double lastUpdateDate,
                                           final CallBackInterface.RegisterEventsUpdatesCallback callback) {
-        /*if(studentlistener != null){
-            FirebaseDatabase
+        if (eventListener != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("events");
+            myRef.removeEventListener(eventListener);
             return;
-        }*/
+        }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
         myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate);
-        ChildEventListener listener = myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate)
+        eventListener = myRef.orderByChild("lastUpdateDate").startAt(lastUpdateDate)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -178,51 +180,10 @@ public class ModelFirebase {
 
                     }
                 });
-        listeners.add(listener);
+
     }
 
-
-
-   /* public static void syncAndRegisterCaseData(long lastUpdate, final CallBackInterface.RegisterCasesEvents callback) {
-        Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - pulling data from firebase");
-        myRef.orderByChild(SORT_CASE_LAST_UPDATE).startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Case aCase = dataSnapshot.getValue(Case.class);
-                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildAdded " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase, DataStateChange.ADDED);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Case aCase = dataSnapshot.getValue(Case.class);
-                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildChanged " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase, DataStateChange.CHANGED);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Case aCase = dataSnapshot.getValue(Case.class);
-                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildRemoved " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase, DataStateChange.REMOVED);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Case aCase = dataSnapshot.getValue(Case.class);
-                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildMoved " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase, DataStateChange.CHANGED);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }*/
-
-
-    public String getFirebaseEventEntityId() {
+    public String getFirebaseEntityId() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
         String newKey = myRef.push().getKey();

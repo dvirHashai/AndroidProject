@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.cambio.finalprojectandroid.R;
 import com.cambio.finalprojectandroid.model.CallBackInterface;
@@ -22,6 +25,9 @@ import com.cambio.finalprojectandroid.utils.Date;
 import com.cambio.finalprojectandroid.utils.Time;
 import com.cambio.finalprojectandroid.widget.MyDatePicker;
 import com.cambio.finalprojectandroid.widget.MyTimePicker;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -116,6 +122,7 @@ public class EventAddFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 dispatchTakePictureIntent();
             }
         });
@@ -148,12 +155,18 @@ public class EventAddFragment extends Fragment {
     }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_GALLERY_CAPTURE = 0;
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+       /* Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(pickPhoto , REQUEST_GALLERY_CAPTURE);//one can be replaced with any action code
+        }*/
+
        /*    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -180,7 +193,7 @@ public class EventAddFragment extends Fragment {
             imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
         }
-        /*if (resultCode == RESULT_OK) {
+        else if (resultCode == RESULT_OK) {
             // if we are here, everything processed successfully.
             if (requestCode == IMAGE_GALLERY_REQUEST) {
                 // if we are here, we are hearing back from the image gallery.
@@ -208,7 +221,7 @@ public class EventAddFragment extends Fragment {
                     Toast.makeText(getActivity(), "Unable to open image", Toast.LENGTH_LONG).show();
                 }
 
-            }*/
-       // }
+            }
+        }
     }
 }

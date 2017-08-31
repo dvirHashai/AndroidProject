@@ -47,24 +47,37 @@ public class EventListFragment extends Fragment {
     // (in the UI thread for Toast)
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Model.EventUpdateEvent event) {
-        Toast.makeText(getActivity(), "got new event item event", Toast.LENGTH_SHORT).show();
+
         switch(event.stateChange){
             case ADDED:
-                data.add(event.event);
+                if (data.isEmpty()){
+                    if (!data.contains(event.event)) {
+                        data.add(event.event);
+                        Toast.makeText(getActivity(), "New event is added", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+
+
                 break;
             case REMOVED:
                 for (Event eventItem : data) {
                     if (eventItem.getId().equals(event.event.getId())) {
 
                         data.remove(eventItem);
+                        Toast.makeText(getActivity(), "Event remove from list", Toast.LENGTH_SHORT).show();
+                        break;
                     }
                 }
-                break;
+
+
             case CHANGED:
                 for (Event eventItem : data) {
                     if (eventItem.getId().equals(event.event.getId())) {
                         Log.d("TAG","onMessageEvent " + eventItem.getId() + "equals: " + event.event.getId());
+
                         eventItem.setEvent(event.event);
+                        Toast.makeText(getActivity(), "Event is change " , Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -224,6 +237,8 @@ public class EventListFragment extends Fragment {
                             String tagUrl = imageView.getTag().toString();
                             if (tagUrl.equals(event.getImageUrl())) {
                                 imageView.setImageBitmap(image);
+                                progressBar.setVisibility(View.GONE);
+                            }else {
                                 progressBar.setVisibility(View.GONE);
                             }
                         }

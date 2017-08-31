@@ -11,7 +11,6 @@ import com.cambio.finalprojectandroid.MyApplication;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -24,6 +23,7 @@ import static com.cambio.finalprojectandroid.model.ModelFiles.saveImageToFile;
  */
 
 public class Model {
+    public static Model instace;
 
     //Static Members
     public static Model instance;
@@ -40,11 +40,9 @@ public class Model {
         modelMem = new ModelMem();
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFirebase = new ModelFirebase();
+         synchAndRegisterEventData();
 
-
-        synchAndRegisterEventData();
-
-        // modelSql.onUpgrade(modelSql.getWritableDatabase(),8,9);
+         //modelSql.onUpgrade(modelSql.getWritableDatabase(),8,9);
 
     }
 
@@ -124,6 +122,7 @@ public class Model {
                             break;
                         case CHANGED:
                             //TODO EventSql updatechangeQuery
+                            EventSql.onUpDateEventItem(modelSql.getWritableDatabase(), event);
 
                             break;
                     }
