@@ -41,6 +41,7 @@ public class EventAddFragment extends Fragment {
     Bitmap imageBitmap;
     ProgressBar progressBar;
     public static final int IMAGE_GALLERY_REQUEST = 20;
+
     public EventAddFragment() {
         // Required empty public constructor
     }
@@ -192,8 +193,7 @@ public class EventAddFragment extends Fragment {
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
-        }
-        else if (resultCode == RESULT_OK) {
+        } else if (resultCode == RESULT_OK) {
             // if we are here, everything processed successfully.
             if (requestCode == IMAGE_GALLERY_REQUEST) {
                 // if we are here, we are hearing back from the image gallery.

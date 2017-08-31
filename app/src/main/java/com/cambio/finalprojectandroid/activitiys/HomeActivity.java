@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.cambio.finalprojectandroid.R;
 import com.cambio.finalprojectandroid.model.Model;
 
-public class HomeActivity extends Activity  {
+public class HomeActivity extends Activity {
 
 
     @Override
@@ -41,15 +41,7 @@ public class HomeActivity extends Activity  {
         });
 
 
-
-
-
     }
-
-
-
-
-
 
 
 }

@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activitiys.RegisterActivity"
+            android:name=".activitiys.LoginActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activitiys.LoginActivity"
+            android:name=".activitiys.RegisterActivity"
 
             android:label="@string/app_name"
             android:launchMode="singleTop"

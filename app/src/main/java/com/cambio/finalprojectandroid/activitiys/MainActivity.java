@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +16,7 @@ import com.cambio.finalprojectandroid.fragments.EventEditFragment;
 import com.cambio.finalprojectandroid.fragments.EventListFragment;
 import com.cambio.finalprojectandroid.model.Model;
 
-public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener{
+public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener {
 
     EventListFragment eventListFragment;
     EventDetailsFragment eventDetailsFragment;
@@ -45,7 +44,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
         } else if (getFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof EventDetailsFragment) {
             getMenuInflater().inflate(R.menu.edit_details_item, menu);
             getMenuInflater().inflate(R.menu.delete_item, menu);
-        }else if (getFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof EventEditFragment){
+        } else if (getFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof EventEditFragment) {
             getMenuInflater().inflate(R.menu.delete_item, menu);
         }
 
@@ -55,7 +54,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         FragmentTransaction tran = null;
-        Fragment currentFragment ;
+        Fragment currentFragment;
         String eventId;
         int itemId = item.getItemId();
         switch (itemId) {
@@ -68,31 +67,31 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
                 return true;
             case R.id.main_edit:
-                if (getFragmentManager().getBackStackEntryCount() >= 1){
+                if (getFragmentManager().getBackStackEntryCount() >= 1) {
                     currentFragment = getFragmentManager().findFragmentById(R.id.main_fragment_container);
-                     if(currentFragment instanceof EventDetailsFragment){
-                         EventEditFragment eventEditFragment = EventEditFragment.newInstance(((EventDetailsFragment) currentFragment).getEventId());
-                         tran = getFragmentManager().beginTransaction();
-                         tran.replace(R.id.main_fragment_container, eventEditFragment);
-                         tran.addToBackStack("");
-                         tran.commit();
+                    if (currentFragment instanceof EventDetailsFragment) {
+                        EventEditFragment eventEditFragment = EventEditFragment.newInstance(((EventDetailsFragment) currentFragment).getEventId());
+                        tran = getFragmentManager().beginTransaction();
+                        tran.replace(R.id.main_fragment_container, eventEditFragment);
+                        tran.addToBackStack("");
+                        tran.commit();
                     }
-                }else {
-                    Log.d("TAG","MainActivity  R.id.main_delete getFragmentManager().getBackStackEntryCount() < 1");
+                } else {
+                    Log.d("TAG", "MainActivity  R.id.main_delete getFragmentManager().getBackStackEntryCount() < 1");
                 }
                 return true;
 
             case R.id.main_delete:
-                if (getFragmentManager().getBackStackEntryCount() >= 1){
+                if (getFragmentManager().getBackStackEntryCount() >= 1) {
                     currentFragment = getFragmentManager().findFragmentById(R.id.main_fragment_container);
-                    if(currentFragment instanceof EventEditFragment){
+                    if (currentFragment instanceof EventEditFragment) {
                         Model.instance.deleteEventItem(((EventEditFragment) currentFragment).getEventId());
-                    }else if(currentFragment instanceof EventDetailsFragment){
+                    } else if (currentFragment instanceof EventDetailsFragment) {
                         Model.instance.deleteEventItem(((EventDetailsFragment) currentFragment).getEventId());
                         ((EventDetailsFragment) currentFragment).getmListener().onDetailsEventInteraction();
                     }
-                }else {
-                    Log.d("TAG","MainActivity  R.id.main_delete getFragmentManager().getBackStackEntryCount() < 1");
+                } else {
+                    Log.d("TAG", "MainActivity  R.id.main_delete getFragmentManager().getBackStackEntryCount() < 1");
                 }
 
 
@@ -132,8 +131,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     }
 
     @Override
-    public void onAddEventInteraction()
-    {
+    public void onAddEventInteraction() {
 
         cleanBackStack();
     }
