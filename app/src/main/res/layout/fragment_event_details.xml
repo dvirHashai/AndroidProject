@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cambio.finalprojectandroid.fragments.EventDetailsFragment">
+    tools:context="com.cambio.finalprojectandroid.fragments.EventDetailsFragment"
+    android:background="@color/bg_register">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,24 +14,28 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/event_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="118dp"
-                android:src="@drawable/avatar" />
+                android:src="@drawable/avatar"
+                />
+
             <ProgressBar
                 android:id="@+id/event_details_progressBar"
-                android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_width="70dp"
-                android:visibility="gone"
-                android:layout_height="70dp" />
+                android:layout_height="70dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:visibility="gone" />
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="6">
+            android:weightSum="6"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,14 +49,16 @@
                     android:layout_margin="10dp"
                     android:gravity="center"
                     android:text="Name:"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/event_details_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -66,14 +73,16 @@
                     android:layout_margin="10dp"
                     android:gravity="center"
                     android:text="Price:"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/event_details_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -88,14 +97,16 @@
                     android:layout_margin="10dp"
                     android:gravity="center"
                     android:text="Location:"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/event_details_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
 
@@ -109,14 +120,16 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="Time:"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/event_details_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -129,14 +142,16 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="Date:"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/event_details_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
 
