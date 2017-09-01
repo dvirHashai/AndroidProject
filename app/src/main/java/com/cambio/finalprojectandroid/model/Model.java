@@ -40,7 +40,7 @@ public class Model {
         modelMem = new ModelMem();
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFirebase = new ModelFirebase();
-         synchAndRegisterEventData();
+        synchAndRegisterEventData();
 
 
         // modelSql.onUpgrade(modelSql.getWritableDatabase(),12,13);

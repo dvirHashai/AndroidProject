@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -39,18 +38,20 @@ public class EventListFragment extends Fragment {
     List<Event> data = new LinkedList<>();
     EventListAdapter adapter;
 
+
     static final int REQUEST_WRITE_STORAGE = 11;
     private OnFragmentInteractionListener mListener;
-
+    boolean pressedBack = false;
+    boolean rotate = false;
 
     // This method will be called when a MessageEvent is posted
     // (in the UI thread for Toast)
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Model.EventUpdateEvent event) {
 
-        switch(event.stateChange){
+        switch (event.stateChange) {
             case ADDED:
-                if (!data.isEmpty()){
+                if (!data.isEmpty()) {
                     if (!data.contains(event.event)) {
                         data.add(event.event);
                         Toast.makeText(getActivity(), "New event is added", Toast.LENGTH_SHORT).show();
@@ -74,10 +75,10 @@ public class EventListFragment extends Fragment {
             case CHANGED:
                 for (Event eventItem : data) {
                     if (eventItem.getId().equals(event.event.getId())) {
-                        Log.d("TAG","onMessageEvent " + eventItem.getId() + "equals: " + event.event.getId());
+                        Log.d("TAG", "onMessageEvent " + eventItem.getId() + "equals: " + event.event.getId());
 
                         eventItem.setEvent(event.event);
-                        Toast.makeText(getActivity(), "Event is change " , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Event is change ", Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -114,12 +115,15 @@ public class EventListFragment extends Fragment {
 
 
         getActivity().setTitle("Event List");
+
         // Inflate the layout for this fragment
         View contextView = inflater.inflate(R.layout.fragment_event_list, container, false);
-
         list = (ListView) contextView.findViewById(R.id.event_list);
         adapter = new EventListAdapter();
-        list.setAdapter(adapter);
+
+        if (savedInstanceState == null || pressedBack == true || rotate == true) {
+            list.setAdapter(adapter);
+        }
 
         if (Model.instance != null) {
 
@@ -238,7 +242,7 @@ public class EventListFragment extends Fragment {
                             if (tagUrl.equals(event.getImageUrl())) {
                                 imageView.setImageBitmap(image);
                                 progressBar.setVisibility(View.GONE);
-                            }else {
+                            } else {
                                 progressBar.setVisibility(View.GONE);
                             }
                         }
@@ -257,4 +261,13 @@ public class EventListFragment extends Fragment {
 
     }
 
+
+    public void setPressedBack(boolean pressedBack) {
+        this.pressedBack = pressedBack;
+    }
+
+
+    public void setRotate(boolean rotate) {
+        this.rotate = rotate;
+    }
 }

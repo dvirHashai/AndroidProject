@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.cambio.finalprojectandroid.R;
 import com.cambio.finalprojectandroid.fragments.EventAddFragment;
@@ -23,18 +24,22 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     EventListFragment eventListFragment;
     EventDetailsFragment eventDetailsFragment;
     EventEditFragment eventEditFragment;
+    Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        currentFragment = getFragmentManager().findFragmentById(R.id.main_fragment_container);
+
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            FragmentTransaction tran = getFragmentManager().beginTransaction();
+            eventListFragment = EventListFragment.newInstance();
+            tran.add(R.id.main_fragment_container, eventListFragment, "eventListFragment");
+            tran.commit();
+        }
 
 
-        eventListFragment = EventListFragment.newInstance();
-        FragmentTransaction tran = getFragmentManager().beginTransaction();
-        tran.add(R.id.main_fragment_container, eventListFragment, "eventListFragment");
-
-        tran.commit();
     }
 
     @Override
@@ -119,6 +124,37 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     }
 
     @Override
+    public void onBackPressed() {
+        currentFragment = getFragmentManager().findFragmentById(R.id.main_fragment_container);
+        if (!(currentFragment instanceof EventListFragment)) {
+            cleanBackStack();
+            FragmentTransaction tran = getFragmentManager().beginTransaction();
+            eventListFragment = EventListFragment.newInstance();
+            tran.replace(R.id.main_fragment_container, eventListFragment);
+            tran.commit();
+            eventListFragment.setPressedBack(true);
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        currentFragment = getFragmentManager().findFragmentById(R.id.main_fragment_container);
+        if (currentFragment instanceof EventListFragment) {
+            FragmentTransaction tran = getFragmentManager().beginTransaction();
+            eventListFragment = EventListFragment.newInstance();
+            tran.replace(R.id.main_fragment_container, eventListFragment);
+            tran.commit();
+            eventListFragment.setRotate(true);
+        } else {
+            super.onRestoreInstanceState(savedInstanceState);
+        }
+
+    }
+
+    @Override
     public void onSaveEventInteraction() {
         cleanBackStack();
     }
@@ -143,6 +179,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     public void onDetailsEventInteraction() {
         cleanBackStack();
     }
+
 
     void cleanBackStack() {
         int backStackCount = getFragmentManager().getBackStackEntryCount();

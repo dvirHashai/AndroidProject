@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +30,15 @@ import com.cambio.finalprojectandroid.widget.MyTimePicker;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 
 
 public class EventAddFragment extends Fragment {
-
+    private List<String> myData;
     private OnFragmentInteractionListener mListener;
 
     ImageView imageView;
@@ -49,6 +51,13 @@ public class EventAddFragment extends Fragment {
     }
 
 
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("list", (Serializable) myData);
+    }
+
+
     public static EventAddFragment newInstance() {
         EventAddFragment fragment = new EventAddFragment();
         return fragment;
@@ -57,6 +66,8 @@ public class EventAddFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
     }
 
     @Override
@@ -216,5 +227,19 @@ public class EventAddFragment extends Fragment {
 
             }
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("TAG", "EventAddFragment onDestroyView");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("TAG", "EventAddFragment onDestroy");
+
     }
 }

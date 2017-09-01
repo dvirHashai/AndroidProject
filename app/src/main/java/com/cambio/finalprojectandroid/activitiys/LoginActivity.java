@@ -28,6 +28,8 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         Button login_btn = (Button) findViewById(R.id.login_btn);
+        final EditText Email = ((EditText) findViewById(R.id.login_email));
+        final EditText password = ((EditText) findViewById(R.id.login_password));
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.login_ProgressBar);
         progressBar.setVisibility(View.GONE);
         if (Model.instance == null) {
@@ -40,16 +42,16 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 View view = getCurrentFocus();
                 if (view != null) {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
-                final String userEmail = ((EditText) findViewById(R.id.login_email)).getText().toString();
-                final String userPassword = ((EditText) findViewById(R.id.login_password)).getText().toString();
+                final String userEmail = Email.getText().toString();
+                final String userPassword = password.getText().toString();
                 progressBar.setVisibility(View.VISIBLE);
-                if ( !userEmail.equals("") || !userPassword.equals("")) {
-                    if ( !userEmail.equals("")) {
+                if (!userEmail.equals("") || !userPassword.equals("")) {
+                    if (!userEmail.equals("")) {
                         if (!userPassword.equals("")) {
-                            Model.instance.getModelFirebase().loginAccount(LoginActivity.this, userEmail, userPassword,progressBar, new CallBackInterface.LoginUserCallBack() {
+                            Model.instance.getModelFirebase().loginAccount(LoginActivity.this, userEmail, userPassword, progressBar, new CallBackInterface.LoginUserCallBack() {
                                 @Override
                                 public void onComplete(Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
@@ -97,3 +99,4 @@ public class LoginActivity extends Activity {
 
 
 }
+
