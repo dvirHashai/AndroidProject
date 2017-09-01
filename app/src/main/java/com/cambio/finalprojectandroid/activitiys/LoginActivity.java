@@ -41,7 +41,7 @@ public class LoginActivity extends Activity {
                 if ((userEmail != null && !userEmail.equals("")) || (userPassword != null && !userPassword.equals(""))) {
                     if (userEmail != null && !userEmail.equals("")) {
                         if (userPassword != null && !userPassword.equals("")) {
-                            Model.instance.getModelFirebase().loginAccount(LoginActivity.this, userEmail, userPassword, new CallBackInterface.LoginUserCallBack() {
+                            Model.instance.getModelFirebase().loginAccount(LoginActivity.this, userEmail, userPassword,progressBar, new CallBackInterface.LoginUserCallBack() {
                                 @Override
                                 public void onComplete(Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
@@ -53,9 +53,12 @@ public class LoginActivity extends Activity {
                                         startActivity(intent);
                                     } else {
                                         // If sign in fails, display a message to the user.
+                                        progressBar.setVisibility(View.GONE);
                                         Log.w("TAG", "signInWithEmail:failure", task.getException());
                                     }
                                 }
+
+
                             });
                         } else {
                             Toast.makeText(LoginActivity.this, "Please Insert Password", Toast.LENGTH_SHORT).show();

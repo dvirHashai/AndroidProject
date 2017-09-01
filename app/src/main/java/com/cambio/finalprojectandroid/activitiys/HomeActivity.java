@@ -36,7 +36,8 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Model.instance.getModelFirebase().signOut();
-                finish();
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 

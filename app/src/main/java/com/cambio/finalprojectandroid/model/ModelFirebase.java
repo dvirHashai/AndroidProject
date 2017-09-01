@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cambio.finalprojectandroid.R;
@@ -271,7 +273,7 @@ public class ModelFirebase {
                 });
     }
 
-    public void loginAccount(final LoginActivity loginActivity, final String email, final String password, final CallBackInterface.LoginUserCallBack callBack) {
+    public void loginAccount(final LoginActivity loginActivity, final String email, final String password,final ProgressBar progressBar, final CallBackInterface.LoginUserCallBack callBack) {
         mAuth = FirebaseAuth.getInstance();
         if (!email.isEmpty()) {
             if (!password.isEmpty()) {
@@ -281,9 +283,11 @@ public class ModelFirebase {
                         if (task.isSuccessful()) {
                             callBack.onComplete(task);
                         } else {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(loginActivity, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
             } else {
                 Toast.makeText(loginActivity, "Password Is Empty", Toast.LENGTH_SHORT).show();
