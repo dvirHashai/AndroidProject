@@ -48,9 +48,9 @@ public class RegisterActivity extends Activity {
                     final String userEmail = ((EditText) findViewById(R.id.register_email)).getText().toString();
                     final String userPassword = ((EditText) findViewById(R.id.register_password)).getText().toString();
                     progressBar.setVisibility(View.VISIBLE);
-                    if ((userEmail != null && !userEmail.equals("")) || (userPassword != null && !userPassword.equals(""))) {
-                        if (userEmail != null && !userEmail.equals("")) {
-                            if (userPassword != null && !userPassword.equals("")) {
+                    if (!userEmail.equals("") || !userPassword.equals("")) {
+                        if ( !userEmail.equals("")) {
+                            if ( !userPassword.equals("")) {
                                 final User newUser = new User(userId, userEmail, userPassword);
                                 Model.instance.getModelFirebase().registerAccount(RegisterActivity.this, userEmail, userPassword, userId, new CallBackInterface.RegisterUserCallBack() {
                                     @Override

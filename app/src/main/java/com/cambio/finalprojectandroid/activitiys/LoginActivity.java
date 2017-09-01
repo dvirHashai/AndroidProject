@@ -24,6 +24,7 @@ public class LoginActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         Button login_btn = (Button) findViewById(R.id.login_btn);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.login_ProgressBar);
         progressBar.setVisibility(View.GONE);
@@ -38,9 +39,9 @@ public class LoginActivity extends Activity {
                 final String userEmail = ((EditText) findViewById(R.id.login_email)).getText().toString();
                 final String userPassword = ((EditText) findViewById(R.id.login_password)).getText().toString();
                 progressBar.setVisibility(View.VISIBLE);
-                if ((userEmail != null && !userEmail.equals("")) || (userPassword != null && !userPassword.equals(""))) {
-                    if (userEmail != null && !userEmail.equals("")) {
-                        if (userPassword != null && !userPassword.equals("")) {
+                if ( !userEmail.equals("") || !userPassword.equals("")) {
+                    if ( !userEmail.equals("")) {
+                        if (!userPassword.equals("")) {
                             Model.instance.getModelFirebase().loginAccount(LoginActivity.this, userEmail, userPassword,progressBar, new CallBackInterface.LoginUserCallBack() {
                                 @Override
                                 public void onComplete(Task<AuthResult> task) {
@@ -48,7 +49,7 @@ public class LoginActivity extends Activity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("TAG", "signInWithEmail:success -> " + userEmail);
                                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                        intent.putExtra("email", userEmail);
+
                                         progressBar.setVisibility(View.GONE);
                                         startActivity(intent);
                                     } else {

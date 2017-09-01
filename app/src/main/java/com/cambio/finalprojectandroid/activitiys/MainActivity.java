@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,9 +96,10 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
                     Log.d("TAG", "MainActivity  R.id.main_delete getFragmentManager().getBackStackEntryCount() < 1");
                 }
 
-
                 return true;
-
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
