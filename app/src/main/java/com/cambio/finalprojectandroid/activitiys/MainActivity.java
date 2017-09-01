@@ -33,6 +33,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
         tran.add(R.id.main_fragment_container, eventListFragment, "eventListFragment");
 
         tran.commit();
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -96,7 +97,8 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
                 return true;
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                getFragmentManager().popBackStack();
+               /* NavUtils.navigateUpFromSameTask(this);*/
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

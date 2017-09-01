@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -48,7 +49,7 @@ public class RegisterActivity extends Activity {
                 public void onClick(View v) { // register new user
                     View view = getCurrentFocus();
                     if (view != null) {
-                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                     final String userId = Model.instance.getModelFirebase().getFirebaseUserEntityId();
@@ -56,8 +57,8 @@ public class RegisterActivity extends Activity {
                     final String userPassword = ((EditText) findViewById(R.id.register_password)).getText().toString();
                     progressBar.setVisibility(View.VISIBLE);
                     if (!userEmail.equals("") || !userPassword.equals("")) {
-                        if ( !userEmail.equals("")) {
-                            if ( !userPassword.equals("")) {
+                        if (!userEmail.equals("")) {
+                            if (!userPassword.equals("")) {
                                 final User newUser = new User(userId, userEmail, userPassword);
                                 Model.instance.getModelFirebase().registerAccount(RegisterActivity.this, userEmail, userPassword, userId, new CallBackInterface.RegisterUserCallBack() {
                                     @Override
@@ -93,9 +94,20 @@ public class RegisterActivity extends Activity {
             });
 
         }
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
 
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
