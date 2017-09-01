@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -39,7 +39,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
             tran.commit();
         }
 
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -103,7 +103,8 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
 
                 return true;
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                getFragmentManager().popBackStack();
+               /* NavUtils.navigateUpFromSameTask(this);*/
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -160,11 +161,6 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     }
 
     @Override
-    public void onDeleteEventInteraction() {
-
-    }
-
-    @Override
     public void onCancelEventInteraction() {
         cleanBackStack();
     }
@@ -179,7 +175,6 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     public void onDetailsEventInteraction() {
         cleanBackStack();
     }
-
 
     void cleanBackStack() {
         int backStackCount = getFragmentManager().getBackStackEntryCount();

@@ -35,7 +35,7 @@ public class HomeActivity extends Activity {
                 startActivity(intent);
             }
         });
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 

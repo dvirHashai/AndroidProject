@@ -1,7 +1,6 @@
 package com.cambio.finalprojectandroid.model;
 
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -14,7 +13,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.cambio.finalprojectandroid.model.DataStateChange.ADDED;
 import static com.cambio.finalprojectandroid.model.ModelFiles.saveImageToFile;
 
 /**
@@ -82,7 +80,6 @@ public class Model {
 
     public void addEvent(Event event) {
         modelFirebase.addEvent(event);
-        //EventBus.getDefault().post(new EventUpdateEvent(event));
     }
 
 

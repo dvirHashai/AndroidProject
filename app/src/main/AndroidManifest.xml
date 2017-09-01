@@ -12,8 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activitiys.LoginActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

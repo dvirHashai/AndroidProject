@@ -113,8 +113,8 @@ public class EventDetailsFragment extends Fragment {
                 eventTime.setText(event.getTime().toString());
                 eventLocation.setText(event.getLocation());
                 eventPrice.setText(event.getPrice());
-                //TODO interface method to transfer the id of the student to the edit fragment by option menu in the main activity
-                Model.instance.getModelMem().setEventId(eventId);
+
+
             }
 
             @Override

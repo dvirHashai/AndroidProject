@@ -38,7 +38,7 @@ import static android.view.View.GONE;
 
 
 public class EventAddFragment extends Fragment {
-    private List<String> myData;
+
     private OnFragmentInteractionListener mListener;
 
     ImageView imageView;
@@ -51,13 +51,6 @@ public class EventAddFragment extends Fragment {
     }
 
 
-    @Override
-    public void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("list", (Serializable) myData);
-    }
-
-
     public static EventAddFragment newInstance() {
         EventAddFragment fragment = new EventAddFragment();
         return fragment;
@@ -66,8 +59,6 @@ public class EventAddFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-
     }
 
     @Override
@@ -95,7 +86,7 @@ public class EventAddFragment extends Fragment {
                         Date date = new Date(datePicker.getDate());
                         Time time = new Time(timePicker.getTime());
                         if (Model.instance != null) {
-                            final Event event = new Event(Model.instance.getModelFirebase().getFirebaseUserEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", 0);
+                            final Event event = new Event(Model.instance.getModelFirebase().getFirebaseEventEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", 0);
                             if (imageBitmap != null) {
                                 Model.instance.saveImage(imageBitmap, event.getId() + "jpeg", new CallBackInterface.SaveImageListener() {
                                     @Override
@@ -227,19 +218,5 @@ public class EventAddFragment extends Fragment {
 
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("TAG", "EventAddFragment onDestroyView");
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("TAG", "EventAddFragment onDestroy");
-
     }
 }
