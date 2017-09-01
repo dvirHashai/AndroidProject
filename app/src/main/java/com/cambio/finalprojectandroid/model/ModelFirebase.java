@@ -9,11 +9,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.cambio.finalprojectandroid.R;
 import com.cambio.finalprojectandroid.activitiys.LoginActivity;
 import com.cambio.finalprojectandroid.activitiys.RegisterActivity;
-import com.cambio.finalprojectandroid.utils.Date;
-import com.cambio.finalprojectandroid.utils.Time;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,8 +32,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +43,7 @@ public class ModelFirebase {
 
     ChildEventListener eventListener;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
 
     public void addEvent(Event event) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -185,7 +180,7 @@ public class ModelFirebase {
 
     }
 
-    public String getFirebaseEntityId() {
+    public String getFirebaseEventEntityId() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("events");
         String newKey = myRef.push().getKey();
@@ -216,14 +211,7 @@ public class ModelFirebase {
     }
 
 
-    public static String getCurrentLoggedUserId() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            return currentUser.getDisplayName();
-        } else {
-            return null;
-        }
-    }
+
 
     public static void getUser(String accountId, final CallBackInterface.GetUserCallback callback) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();

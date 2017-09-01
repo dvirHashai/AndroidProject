@@ -122,11 +122,6 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     }
 
     @Override
-    public void onDeleteEventInteraction() {
-
-    }
-
-    @Override
     public void onCancelEventInteraction() {
         cleanBackStack();
     }

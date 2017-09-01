@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,7 @@ public class EventAddFragment extends Fragment {
                         Date date = new Date(datePicker.getDate());
                         Time time = new Time(timePicker.getTime());
                         if (Model.instance != null) {
-                            final Event event = new Event(Model.instance.getModelFirebase().getFirebaseUserEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", 0);
+                            final Event event = new Event(Model.instance.getModelFirebase().getFirebaseEventEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", 0);
                             if (imageBitmap != null) {
                                 Model.instance.saveImage(imageBitmap, event.getId() + "jpeg", new CallBackInterface.SaveImageListener() {
                                     @Override

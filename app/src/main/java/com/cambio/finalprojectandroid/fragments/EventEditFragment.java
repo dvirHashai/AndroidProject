@@ -126,10 +126,6 @@ public class EventEditFragment extends Fragment {
 
                 if(eventDate.getDate() != null) {
                     if (eventTime.getTime() != null) {
-                       /* Date date = new Date(eventDate.getDate());
-                        Time time = new Time(eventTime.getTime());*/
-
-
                             final Event newEvent = new Event(event1.getId(),eventName.getText().toString(),eventDate.getDate(),eventTime.getTime(),eventPrice.getText().toString(),eventLocation.getText().toString(),eventImage.getTag().toString(),event1.getLastUpDateTime());
                             if (imageBitmap != null) {
                                 Model.instance.saveImage(imageBitmap, newEvent.getId() + "jpeg", new CallBackInterface.SaveImageListener() {
@@ -208,9 +204,6 @@ public class EventEditFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onSaveEventInteraction();
-
-        void onDeleteEventInteraction();
-
         void onCancelEventInteraction();
     }
 
