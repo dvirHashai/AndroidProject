@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -21,8 +20,7 @@ import com.cambio.finalprojectandroid.model.Model;
 public class MainActivity extends Activity implements EventListFragment.OnFragmentInteractionListener, EventEditFragment.OnFragmentInteractionListener, EventAddFragment.OnFragmentInteractionListener, EventDetailsFragment.OnFragmentInteractionListener {
 
     EventListFragment eventListFragment;
-    EventDetailsFragment eventDetailsFragment;
-    EventEditFragment eventEditFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
