@@ -2,10 +2,12 @@
 package com.cambio.finalprojectandroid.activitiys;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -35,6 +37,11 @@ public class LoginActivity extends Activity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                View view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
                 final String userEmail = ((EditText) findViewById(R.id.login_email)).getText().toString();
                 final String userPassword = ((EditText) findViewById(R.id.login_password)).getText().toString();
                 progressBar.setVisibility(View.VISIBLE);
