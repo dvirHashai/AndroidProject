@@ -83,6 +83,11 @@ public class EventAddFragment extends Fragment {
                         Date date = new Date(datePicker.getDate());
                         Time time = new Time(timePicker.getTime());
                         if (Model.instance != null) {
+                            try {
+                                Integer.parseInt(price.getText().toString());
+                            } catch (NumberFormatException e) {
+                                Toast.makeText(getActivity(), "Invalid Price Format", Toast.LENGTH_SHORT).show();
+                            }
                             final Event event = new Event(Model.instance.getModelFirebase().getFirebaseEventEntityId(), name.getText().toString(), date, time, price.getText().toString(), location.getText().toString(), "", 0);
                             if (imageBitmap != null) {
                                 Model.instance.saveImage(imageBitmap, event.getId() + "jpeg", new CallBackInterface.SaveImageListener() {
@@ -91,12 +96,13 @@ public class EventAddFragment extends Fragment {
                                         event.setImageUrl(url);
                                         Model.instance.addEvent(event);
                                         progressBar.setVisibility(GONE);
+                                        mListener.onAddEventInteraction();
                                     }
 
                                     @Override
                                     public void fail() {
                                         progressBar.setVisibility(GONE);
-
+                                        Toast.makeText(getActivity(), "Failed To Upload Event", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             } else {
@@ -106,9 +112,9 @@ public class EventAddFragment extends Fragment {
                             }
                         }
                     }
+
                 }
                 getActivity().invalidateOptionsMenu();
-                mListener.onAddEventInteraction();
             }
         });
 

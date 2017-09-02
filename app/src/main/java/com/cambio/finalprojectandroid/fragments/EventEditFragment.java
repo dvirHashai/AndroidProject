@@ -128,10 +128,16 @@ public class EventEditFragment extends Fragment {
         });
 
         Button saveBtn = (Button) contentView.findViewById(R.id.event_edit_save_btn);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        saveBtn.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
-
+                try {
+                    Integer.parseInt(eventPrice.getText().toString());
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), "Invalid Price Format", Toast.LENGTH_SHORT).show();
+                }
                 if (eventDate.getDate() != null) {
                     if (eventTime.getTime() != null) {
                         final Event newEvent = new Event(event1.getId(), eventName.getText().toString(), eventDate.getDate(), eventTime.getTime(), eventPrice.getText().toString(), eventLocation.getText().toString(), eventImage.getTag().toString(), event1.getLastUpDateTime());
@@ -143,6 +149,7 @@ public class EventEditFragment extends Fragment {
                                     newEvent.setImageUrl(url);
                                     Model.instance.addEvent(newEvent);
                                     progressBar.setVisibility(GONE);
+                                    mListener.onSaveEventInteraction();
                                 }
 
                                 @Override
@@ -158,7 +165,7 @@ public class EventEditFragment extends Fragment {
 
                         }
                         getActivity().invalidateOptionsMenu();
-                        mListener.onSaveEventInteraction();
+
 
                     } else {
                         Log.d("TAG", "Time is null");
@@ -170,7 +177,9 @@ public class EventEditFragment extends Fragment {
         });
 
         Button cancelBtn = (Button) contentView.findViewById(R.id.event_edit_cancel_btn);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
+        cancelBtn.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 getActivity().invalidateOptionsMenu();
@@ -180,7 +189,9 @@ public class EventEditFragment extends Fragment {
         });
 
         imageView = (ImageView) contentView.findViewById(R.id.event_edit_image);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
