@@ -39,6 +39,7 @@ public class RegisterActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -69,6 +70,7 @@ public class RegisterActivity extends Activity {
                                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                             progressBar.setVisibility(View.GONE);
                                             startActivity(intent);
+                                            finish();
 
                                         }
                                     }

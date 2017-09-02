@@ -64,8 +64,8 @@ public class EventListFragment extends Fragment {
             case REMOVED:
                 for (Event eventItem : data) {
                     if (eventItem.getId().equals(event.event.getId())) {
-
                         data.remove(eventItem);
+                        //list.setAdapter(adapter);
                         Toast.makeText(getActivity(), "Event remove from list", Toast.LENGTH_SHORT).show();
                         break;
                     }

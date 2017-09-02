@@ -41,7 +41,7 @@ public class Model {
         synchAndRegisterEventData();
 
 
-        // modelSql.onUpgrade(modelSql.getWritableDatabase(),12,13);
+        // modelSql.onUpgrade(modelSql.getWritableDatabase(),13,14);
 
     }
 

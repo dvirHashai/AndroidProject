@@ -59,9 +59,9 @@ public class LoginActivity extends Activity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("TAG", "signInWithEmail:success -> " + userEmail);
                                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-
                                         progressBar.setVisibility(View.GONE);
                                         startActivity(intent);
+                                        finish();
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         progressBar.setVisibility(View.GONE);
@@ -93,6 +93,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         getActionBar().setDisplayHomeAsUpEnabled(true);

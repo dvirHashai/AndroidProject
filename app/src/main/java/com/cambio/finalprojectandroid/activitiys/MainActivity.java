@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.cambio.finalprojectandroid.R;
 import com.cambio.finalprojectandroid.fragments.EventAddFragment;
@@ -95,16 +92,20 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
                         Model.instance.deleteEventItem(((EventEditFragment) currentFragment).getEventId());
                     } else if (currentFragment instanceof EventDetailsFragment) {
                         Model.instance.deleteEventItem(((EventDetailsFragment) currentFragment).getEventId());
-                        ((EventDetailsFragment) currentFragment).getmListener().onDetailsEventInteraction();
+
                     }
+                    tran = getFragmentManager().beginTransaction();
+                    eventListFragment = EventListFragment.newInstance();
+                    tran.replace(R.id.main_fragment_container, eventListFragment);
+                    tran.commit();
+                    eventListFragment.setPressedBack(true);
                 } else {
                     Log.d("TAG", "MainActivity  R.id.main_delete getFragmentManager().getBackStackEntryCount() < 1");
                 }
 
                 return true;
             case android.R.id.home:
-                getFragmentManager().popBackStack();
-               /* NavUtils.navigateUpFromSameTask(this);*/
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -127,7 +128,7 @@ public class MainActivity extends Activity implements EventListFragment.OnFragme
     @Override
     public void onBackPressed() {
         currentFragment = getFragmentManager().findFragmentById(R.id.main_fragment_container);
-        if (!(currentFragment instanceof EventListFragment)) {
+        if (!(currentFragment instanceof EventListFragment) && !(currentFragment instanceof  EventEditFragment)) {
             cleanBackStack();
             FragmentTransaction tran = getFragmentManager().beginTransaction();
             eventListFragment = EventListFragment.newInstance();

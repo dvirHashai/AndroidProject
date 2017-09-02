@@ -23,6 +23,7 @@ public class HomeActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
 
             }
         });
@@ -33,6 +34,7 @@ public class HomeActivity extends Activity {
                 Model.instance.getModelFirebase().signOut();
                 Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
